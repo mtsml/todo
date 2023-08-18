@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Modal from './components/Modal';
 import Task from './components/Task';
 import { taskState } from './atoms/taskState';
+import { taskSelector } from './atoms/taskSelector';
 
 
 const Top = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [todoList, setTodoList] = useRecoilState(taskState);
+  const [_, setTodoList] = useRecoilState(taskState);
+  const todoList = useRecoilValue(taskSelector);
 
   const handleCheck = (id, checked) => {
     setTodoList(todoList.map(todo => todo.id === id ? {...todo, done: checked} : todo));    
