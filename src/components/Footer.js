@@ -8,7 +8,7 @@ const Footer = ({ setModalIsOpen }) => {
 
     return (
         <footer className='addBtnWrapper border-top border-secondary'>
-            <Button icon="angle-left" onClick={() => navigate("/")} />
+            <Button icon="home" onClick={() => navigate("/")} />
             <Button icon="plus-circle" onClick={() => setModalIsOpen(true)}/>
             <Button icon="search"/>
         </footer>
