@@ -8,7 +8,7 @@ const Task = ({ task, handleCheck }) => {
 
     return (
         <div
-            className="d-flex p-2 border-top border-bottom border-secondary"
+            className="d-flex m-1 p-2 border border-secondary"
             onClick={() => navigate("/detail", { state: task })}
         >
             <MDBCheckbox
