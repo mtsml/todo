@@ -76,10 +76,10 @@ class Modal extends Component {
 
                         <MDBModalFooter>
                             <MDBBtn color='secondary' onClick={this.toggleShow}>
-                                Close
+                                やめる
                             </MDBBtn>
                             <MDBBtn onClick={this.handleSubmit}>
-                                追加
+                                ついか
                             </MDBBtn>
                         </MDBModalFooter>
                     </MDBModalContent>
