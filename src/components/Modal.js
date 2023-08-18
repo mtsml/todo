@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component, createRef } from 'react';
 import {
     MDBBtn,
     MDBInput,
@@ -12,51 +12,70 @@ import {
 } from 'mdb-react-ui-kit'
 
 
-const Modal = ({ isOpen, setModalIsOpen, setTodoList, todoList }) => {
-    const [newTask, setNewTask] = useState("");
-
-    const handleChange = (e) => {
-        setNewTask(e.target.value);
+class Modal extends Component {
+    constructor(props) {
+        super(props);
+        this.ref = createRef(null);
+        this.state = {
+            newTask: ""
+        }
     }
 
-    const handleSubmit = () => {
+    componentDidUpdate(prev) {
+        if (this.props.isOpen && (prev.isOpen !== this.props.isOpen)) {
+            this.ref.current.focus();
+        }
+    }
+
+    handleChange = (e) => {
+        this.setState({newTask: e.target.value});
+    }
+
+    handleSubmit = () => {
+        const { setTodoList, setModalIsOpen, todoList } = this.props;
+        const { newTask } = this.state;
         const id = crypto.randomUUID();
         setTodoList([...todoList, { id, value: newTask, done: false }]);
-        setNewTask("");
+        this.setState({newTask: ""});
         setModalIsOpen(false);
     }
 
-    const toggleShow = () => setModalIsOpen(!isOpen);
+    toggleShow = () => this.props.setModalIsOpen(!this.props.isOpen)
 
-    return (
-        <MDBModal show={isOpen} setShow={setModalIsOpen} tabIndex='-1'>
-            <MDBModalDialog>
-                <MDBModalContent>
-                    <MDBModalHeader>
-                        <MDBModalTitle>タスクを追加する</MDBModalTitle>
-                        <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
-                    </MDBModalHeader>
-                    <MDBModalBody>
-                        <MDBInput
-                            type="text"
-                            name="task"
-                            value={newTask}
-                            onChange={handleChange}
-                        />
-                    </MDBModalBody>
+    render() {
+        const { isOpen, setModalIsOpen } = this.props;
 
-                    <MDBModalFooter>
-                        <MDBBtn color='secondary' onClick={toggleShow}>
-                            Close
-                        </MDBBtn>
-                        <MDBBtn onClick={handleSubmit}>
-                            追加
-                        </MDBBtn>
-                    </MDBModalFooter>
-                </MDBModalContent>
-            </MDBModalDialog>
-        </MDBModal>
-    )
+        return (
+            <MDBModal show={isOpen} setShow={setModalIsOpen} tabIndex='-1'>
+                <MDBModalDialog>
+                    <MDBModalContent>
+                        <MDBModalHeader>
+                            <MDBModalTitle>タスクを追加する</MDBModalTitle>
+                            <MDBBtn className='btn-close' color='none' onClick={this.toggleShow}></MDBBtn>
+                        </MDBModalHeader>
+                        <MDBModalBody>
+                            <MDBInput
+                                ref={this.ref}
+                                type="text"
+                                name="task"
+                                value={this.state.newTask}
+                                onChange={this.handleChange}
+                            />
+                        </MDBModalBody>
+
+                        <MDBModalFooter>
+                            <MDBBtn color='secondary' onClick={this.toggleShow}>
+                                Close
+                            </MDBBtn>
+                            <MDBBtn onClick={this.handleSubmit}>
+                                追加
+                            </MDBBtn>
+                        </MDBModalFooter>
+                    </MDBModalContent>
+                </MDBModalDialog>
+            </MDBModal>
+        )
+    }
 }
 
 
