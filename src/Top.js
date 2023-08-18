@@ -19,7 +19,7 @@ const Top = () => {
   return (
     <>
       <Header/>
-      {todoList?.map(todo => <Task task={todo} handleCheck={handleCheck}/>)}
+      {todoList?.map(todo => <Task key={todo.id} task={todo} handleCheck={handleCheck}/>)}
       <Footer
         setModalIsOpen={setModalIsOpen}
       />
