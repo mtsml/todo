@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import {
     MDBBtn,
     MDBInput,
+    MDBTextArea,
     MDBModal,
     MDBModalDialog,
     MDBModalContent,
@@ -17,7 +18,8 @@ class Modal extends Component {
         super(props);
         this.ref = createRef(null);
         this.state = {
-            newTask: ""
+            title: "",
+            detail: ""
         }
     }
 
@@ -28,15 +30,15 @@ class Modal extends Component {
     }
 
     handleChange = (e) => {
-        this.setState({newTask: e.target.value});
+        this.setState({[e.target.name]: e.target.value});
     }
 
     handleSubmit = () => {
         const { setTodoList, setModalIsOpen, todoList } = this.props;
-        const { newTask } = this.state;
+        const { title, detail } = this.state;
         const id = crypto.randomUUID();
-        setTodoList([...todoList, { id, value: newTask, done: false }]);
-        this.setState({newTask: ""});
+        setTodoList([...todoList, { id, value: title, detail, done: false }]);
+        this.setState({title: "", detail: ""});
         setModalIsOpen(false);
     }
 
@@ -55,9 +57,18 @@ class Modal extends Component {
                         </MDBModalHeader>
                         <MDBModalBody>
                             <MDBInput
+                                className="mb-2"
                                 ref={this.ref}
+                                name="title"
+                                label="タイトル"
                                 type="text"
-                                name="task"
+                                value={this.state.newTask}
+                                onChange={this.handleChange}
+                            />
+                            <MDBTextArea
+                                name="detail"
+                                label="説明"
+                                type="textarea"
                                 value={this.state.newTask}
                                 onChange={this.handleChange}
                             />
