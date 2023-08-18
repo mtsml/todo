@@ -19,12 +19,15 @@ const Detail = () => {
 
     return (
         <>
-            <h1>{task.value}</h1>
+            <h1 className="m-2">{task.value}</h1>
             <Button
                 onClick={() => handleClick(id)}
                 label="del"
-                className="ms-auto"
             />
+            <hr></hr>
+            <p>
+                {task.detail}
+            </p>
             <Footer />
         </>
     )
