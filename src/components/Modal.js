@@ -34,10 +34,11 @@ class Modal extends Component {
     }
 
     handleSubmit = () => {
+        console.log("submit")
         const { setTodoList, setModalIsOpen, todoList } = this.props;
         const { title, detail } = this.state;
         const id = crypto.randomUUID();
-        setTodoList([...todoList, { id, value: title, detail, done: false }]);
+        setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
         this.setState({title: "", detail: ""});
         setModalIsOpen(false);
     }
