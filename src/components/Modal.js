@@ -6,8 +6,6 @@ import {
     MDBModal,
     MDBModalDialog,
     MDBModalContent,
-    MDBModalHeader,
-    MDBModalTitle,
     MDBModalBody,
     MDBModalFooter,
 } from 'mdb-react-ui-kit'
@@ -18,6 +16,7 @@ class Modal extends Component {
         super(props);
         this.ref = createRef(null);
         this.state = {
+            isEditMode: false,
             title: "",
             detail: ""
         }
@@ -25,12 +24,14 @@ class Modal extends Component {
 
     componentDidUpdate(prev) {
         if (this.props.isOpen && (prev.isOpen !== this.props.isOpen)) {
-            this.ref.current.focus();
             if (this.props.selectedTask) {
                 this.setState({
+                    isEditMode: true,
                     title: this.props.selectedTask.value,
                     detail: this.props.selectedTask.detail
                 })
+            } else {
+                this.ref.current.focus();
             }
         }
     }
@@ -40,14 +41,17 @@ class Modal extends Component {
     }
 
     handleSubmit = () => {
-        const { addTask, setModalIsOpen } = this.props;
-        const { title, detail } = this.state;
-        addTask(title, detail);
-        this.setState({title: "", detail: ""});
+        const { addTask, updateTask, setModalIsOpen } = this.props;
+        this.state.isEditMode
+            ? updateTask(this.props.selectedTask.id, this.state.title, this.state.detail)
+            : addTask(this.state.title, this.state.detail);
+        this.setState({
+            isEditMode: false,
+            title: "",
+            detail: ""
+        });
         setModalIsOpen(false);
     }
-
-    toggleShow = () => this.props.setModalIsOpen(!this.props.isOpen)
 
     render() {
         const { isOpen, setModalIsOpen } = this.props;
@@ -56,10 +60,6 @@ class Modal extends Component {
             <MDBModal show={isOpen} setShow={setModalIsOpen} tabIndex='-1'>
                 <MDBModalDialog>
                     <MDBModalContent>
-                        <MDBModalHeader>
-                            <MDBModalTitle>タスクを追加する</MDBModalTitle>
-                            <MDBBtn className='btn-close' color='none' onClick={this.toggleShow}></MDBBtn>
-                        </MDBModalHeader>
                         <MDBModalBody>
                             <MDBInput
                                 className="mb-2"
@@ -80,11 +80,14 @@ class Modal extends Component {
                         </MDBModalBody>
 
                         <MDBModalFooter>
-                            <MDBBtn color='secondary' onClick={this.toggleShow}>
+                            <MDBBtn color='secondary' onClick={() => setModalIsOpen(false)}>
                                 やめる
                             </MDBBtn>
                             <MDBBtn onClick={this.handleSubmit}>
-                                ついか
+                                {this.state.isEditMode
+                                    ? "更新"
+                                    : "追加"
+                                }
                             </MDBBtn>
                         </MDBModalFooter>
                     </MDBModalContent>

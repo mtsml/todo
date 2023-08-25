@@ -29,6 +29,10 @@ const Top = () => {
     setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
   }
 
+  const updateTask = (id, title, detail) => {
+    setTodoList(todoList.map(todo => todo.id === id ? {...todo, value: title, detail} : todo))
+  }
+
   return (
     <>
       <Header/>
@@ -46,6 +50,7 @@ const Top = () => {
         setModalIsOpen={setModalIsOpen}
         selectedTask={todoList.find(task => task.id === selectedTaskId)}
         addTask={addTask}
+        updateTask={updateTask}
       />
     </>
   );
