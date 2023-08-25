@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import './App.css';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Modal from './components/Modal';
-import Task from './components/Task';
-import { taskState } from './atoms/taskState';
-import { taskSelector } from './atoms/taskSelector';
+import Header from './Header';
+import Footer from './Footer';
+import Modal from './Modal';
+import Task from './Task';
+import { taskState } from '../atoms/taskState';
+import { taskSelector } from '../atoms/taskSelector';
 
 
 const Top = () => {
