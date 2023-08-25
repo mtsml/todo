@@ -31,6 +31,7 @@ const Top = () => {
 
   const updateTask = (id, title, detail) => {
     setTodoList(todoList.map(todo => todo.id === id ? {...todo, value: title, detail} : todo))
+    setSelectedTaskId(null);
   }
 
   return (
