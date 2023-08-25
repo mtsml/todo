@@ -26,6 +26,12 @@ class Modal extends Component {
     componentDidUpdate(prev) {
         if (this.props.isOpen && (prev.isOpen !== this.props.isOpen)) {
             this.ref.current.focus();
+            if (this.props.selectedTask) {
+                this.setState({
+                    title: this.props.selectedTask.value,
+                    detail: this.props.selectedTask.detail
+                })
+            }
         }
     }
 
@@ -34,11 +40,9 @@ class Modal extends Component {
     }
 
     handleSubmit = () => {
-        console.log("submit")
-        const { setTodoList, setModalIsOpen, todoList } = this.props;
+        const { addTask, setModalIsOpen } = this.props;
         const { title, detail } = this.state;
-        const id = crypto.randomUUID();
-        setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
+        addTask(title, detail);
         this.setState({title: "", detail: ""});
         setModalIsOpen(false);
     }
@@ -47,7 +51,7 @@ class Modal extends Component {
 
     render() {
         const { isOpen, setModalIsOpen } = this.props;
-
+    
         return (
             <MDBModal show={isOpen} setShow={setModalIsOpen} tabIndex='-1'>
                 <MDBModalDialog>
@@ -63,14 +67,14 @@ class Modal extends Component {
                                 name="title"
                                 label="タイトル"
                                 type="text"
-                                value={this.state.newTask}
+                                value={this.state.title}
                                 onChange={this.handleChange}
                             />
                             <MDBTextArea
                                 name="detail"
                                 label="説明"
                                 type="textarea"
-                                value={this.state.newTask}
+                                value={this.state.detail}
                                 onChange={this.handleChange}
                             />
                         </MDBModalBody>

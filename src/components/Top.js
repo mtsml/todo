@@ -10,6 +10,8 @@ import { taskSelector } from '../atoms/taskSelector';
 
 const Top = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+
   const [_, setTodoList] = useRecoilState(taskState);
   const todoList = useRecoilValue(taskSelector);
 
@@ -17,18 +19,33 @@ const Top = () => {
     setTodoList(todoList.map(todo => todo.id === id ? {...todo, done: checked} : todo));    
   }
 
+  const selectTask = (id) => {
+    setModalIsOpen(true);
+    setSelectedTaskId(id);
+  }
+
+  const addTask = (title, detail) => {
+    const id = crypto.randomUUID();
+    setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
+  }
+
   return (
     <>
       <Header/>
-      {todoList?.map(todo => <Task key={todo.id} task={todo} handleCheck={handleCheck}/>)}
+      {todoList?.map(todo => <Task
+                                key={todo.id}
+                                task={todo}
+                                selectTask={selectTask}
+                            />
+      )}
       <Footer
         setModalIsOpen={setModalIsOpen}
       />
       <Modal
         isOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
-        setTodoList={setTodoList}
-        todoList={todoList}
+        selectedTask={todoList.find(task => task.id === selectedTaskId)}
+        addTask={addTask}
       />
     </>
   );

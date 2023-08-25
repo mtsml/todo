@@ -2,11 +2,12 @@ import React from 'react';
 import { MDBCheckbox } from 'mdb-react-ui-kit';
 
 
-const Task = ({ task, handleCheck }) => {
+const Task = ({ task, handleCheck, selectTask }) => {
 
     return (
         <div
             className="d-flex m-1 p-2 border border-secondary rounded"
+            onClick={() => selectTask(task.id)}
         >
             <MDBCheckbox
                 inline
