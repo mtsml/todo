@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
     MDBBtn,
@@ -17,6 +17,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
     const [isEditMode, setIsEditMode] = useState(false);
     const [todoList, setTodoList] = useRecoilState(taskState);
     const lists = useRecoilValue(listState);
+    const titleRef = useRef("");
 
     const callback = () => {
         if (selectedTask) {
@@ -26,6 +27,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
             setIsEditMode(true);
         } else {
             setListId(activeListId);
+            titleRef.current?.focus();
         }
     }
 
@@ -76,6 +78,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                 </select>
             </div>
             <MDBInput
+                ref={titleRef}
                 className="mb-2 mt-4"
                 name="title"
                 label="タイトル"

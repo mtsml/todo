@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import {
     MDBBtn,
@@ -13,6 +13,7 @@ const Sidebar = ({ isOpen }) => {
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
   const [list, setList] = useRecoilState(listState);
+  const listNameRef = useRef("");
 
   const selectList = (list) => {
     setSelectedList(list);
@@ -41,6 +42,8 @@ const Sidebar = ({ isOpen }) => {
   const callback = () => {
     if (selectedList) {
         setListName(selectedList.name);
+    } else {
+        listNameRef.current?.focus();
     }
   }
 
@@ -78,6 +81,7 @@ const Sidebar = ({ isOpen }) => {
             callback={callback}
         >
             <MDBInput
+                ref={listNameRef}
                 className="mb-2 mt-4"
                 name="title"
                 label="リスト名"
