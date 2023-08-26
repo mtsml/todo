@@ -10,6 +10,7 @@ const Button = ({ size, onClick, className }) => {
             size={size || "3x"}
             onClick={onClick}
             className={className}
+            color="primary"
         >
         </MDBIcon>
     )

@@ -4,6 +4,7 @@ import Header from './Header';
 import Button from './Button';
 import Modal from './Modal';
 import Task from './Task';
+import Filter from './Filter';
 import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
 
@@ -37,6 +38,7 @@ const Top = () => {
   return (
     <>
       <Header/>
+      <Filter/>
       {todoList?.map(todo => <Task
                                 key={todo.id}
                                 task={todo}

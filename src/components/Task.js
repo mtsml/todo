@@ -6,9 +6,10 @@ const Task = ({ task, selectTask, checkTask }) => {
 
     return (
         <div
-            className="d-flex align-items-center m-1 p-2"
+            className="d-flex align-items-top m-1 p-2"
         >
             <MDBIcon
+                className="pt-3"
                 icon={task.done ? "check" : "circle-notch"}
                 color={task.done ? "success" : "secondary"}
                 size="lg"
