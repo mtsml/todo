@@ -5,7 +5,8 @@ export const listState = atom({
     key: "listState",
     default: [
         { id: 1, name: "やること", isActive: true },
-        { id: 2, name: "list2", isActive: false },
-        { id: 3, name: "list3", isActive: false },
+        { id: 2, name: "しごとかんけい", isActive: false },
+        { id: 3, name: "てんしょく", isActive: false },
+        { id: 3, name: "その他", isActive: false }
       ]
 })

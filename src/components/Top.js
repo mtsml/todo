@@ -4,7 +4,6 @@ import Header from './Header';
 import Footer from './Footer';
 import Modal from './Modal';
 import Task from './Task';
-import Sidebar from './Sidebar';
 import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
 
@@ -52,7 +51,6 @@ const Top = () => {
       <Footer
         setModalIsOpen={setModalIsOpen}
       />
-      <Sidebar/>
       <Modal
         isOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

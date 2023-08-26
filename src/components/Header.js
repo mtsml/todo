@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
   MDBIcon,
@@ -7,39 +7,43 @@ import {
   MDBTabsLink
 } from 'mdb-react-ui-kit';
 import { listState } from '../atoms/listState';
-import { sidebarState } from '../atoms/SidebarState';
+import Sidebar from './Sidebar';
 
 
 export const Header = () => {
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [list, setList] = useRecoilState(listState);
-  const [sidebar, setSidebar] = useRecoilState(sidebarState);
 
   const handleFillClick = (id) => {
     setList(list.map(l => ({...l, isActive: l.id === id})))
   };
 
   return (
-    <div className='overflow-x-scroll'>
+    <header className='d-flex justify-content-between overflow-x-scroll'>
+        <MDBTabs className='mb-3 text-nowrap' style={{width: "max-content"}}>
+            {list && list.map(l => (
+                <MDBTabsItem key={l.id}>
+                    <MDBTabsLink
+                        onClick={() => !l.isActive && handleFillClick(l.id)}
+                        active={l.isActive}
+                    >
+                        {l.name}
+                    </MDBTabsLink>
+                </MDBTabsItem>
+            ))}
+        </MDBTabs>
         <MDBIcon
-            className="ps-2 pt-2"
+            className="pe-2 pt-2"
+            style={{zIndex: 10}}
             fas
             icon="bars"
             size="2x"
-            onClick={() => setSidebar({isOpen: !sidebar.isOpen})}
+            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
         />
-      <MDBTabs fill className='mb-3 text-nowrap' style={{width: "max-content"}}>
-        {list && list.map(l => (
-            <MDBTabsItem key={l.id}>
-                <MDBTabsLink
-                    onClick={() => !l.isActive && handleFillClick(l.id)}
-                    active={l.isActive}
-                >
-                    {l.name}
-                </MDBTabsLink>
-            </MDBTabsItem>
-        ))}
-      </MDBTabs>
-    </div>
+        <Sidebar
+            isOpen={sidebarIsOpen}
+        />
+    </header>
   );
 }
 
