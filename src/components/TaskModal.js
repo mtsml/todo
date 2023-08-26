@@ -79,7 +79,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
             </div>
             <MDBInput
                 ref={titleRef}
-                className="mb-2 mt-4"
+                className="mb-2 mt-2"
                 name="title"
                 label="タイトル"
                 type="text"
@@ -91,6 +91,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                 label="説明"
                 type="textarea"
                 value={detail}
+                rows={4}
                 onChange={e => setDetail(e.target.value)}
             />
             <div className="mt-2 d-flex justify-content-between">
