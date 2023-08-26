@@ -15,7 +15,7 @@ const Top = () => {
   const [_, setTodoList] = useRecoilState(taskState);
   const todoList = useRecoilValue(taskSelector);
 
-  const handleCheck = (id, checked) => {
+  const checkTask = (id, checked) => {
     setTodoList(todoList.map(todo => todo.id === id ? {...todo, done: checked} : todo));    
   }
 
@@ -41,6 +41,7 @@ const Top = () => {
                                 key={todo.id}
                                 task={todo}
                                 selectTask={selectTask}
+                                checkTask={checkTask}
                             />
       )}
       <Button
