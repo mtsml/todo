@@ -6,6 +6,7 @@ import Modal from './Modal';
 import Task from './Task';
 import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
+import { listState } from '../atoms/listState';
 
 
 const Main = () => {
@@ -14,6 +15,8 @@ const Main = () => {
 
   const [_, setTodoList] = useRecoilState(taskState);
   const todoList = useRecoilValue(taskSelector);
+  const list = useRecoilValue(listState)
+  const activeListId = list.find(l => l.isActive).id;
 
   const checkTask = (id, checked) => {
     setTodoList(todoList.map(todo => todo.id === id ? {...todo, done: checked} : todo));    
@@ -49,6 +52,7 @@ const Main = () => {
         isOpen={modalIsOpen}
         closeModal={closeModal}
         selectedTask={todoList.find(task => task.id === selectedTaskId)}
+        activeListId={activeListId}
       />
     </>
   );

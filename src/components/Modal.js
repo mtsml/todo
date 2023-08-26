@@ -1,36 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
     MDBBtn,
     MDBInput,
     MDBTextArea
 } from 'mdb-react-ui-kit'
 import { taskState } from '../atoms/taskState';
+import { listState } from '../atoms/listState';
 
 
-const Modal = ({isOpen, closeModal, selectedTask}) => {
+const Modal = ({isOpen, closeModal, selectedTask, activeListId}) => {
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
+    const [listId, setListId] = useState("");
     const [isEditMode, setIsEditMode] = useState(false);
     const [todoList, setTodoList] = useRecoilState(taskState);
+    const lists = useRecoilValue(listState);
 
     useEffect(() => {
         if (isOpen && selectedTask) {
             setTitle(selectedTask.value);
             setDetail(selectedTask.detail);
+            setListId(selectedTask.listId)
             setIsEditMode(true);
+        } else if (isOpen) {
+            setListId(activeListId);
         }
-    }, [isOpen, selectedTask])
+    }, [isOpen, selectedTask, activeListId])
 
- 
     const addTask = () => {
         const id = crypto.randomUUID();
-        setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
+        const newTodoList = [...todoList, { id, value: title, detail, done: false, listId }]
+        setTodoList(newTodoList);
         cleanUp();
     }
 
     const updateTask = () => {
-        setTodoList(todoList.map(todo => todo.id === selectedTask.id ? {...todo, value: title, detail} : todo))
+        setTodoList(todoList.map(todo => todo.id === selectedTask.id
+            ? {...todo, value: title, detail, listId}
+            : todo
+        ))
         cleanUp();
     }
 
@@ -43,6 +52,7 @@ const Modal = ({isOpen, closeModal, selectedTask}) => {
         closeModal();
         setTitle("");
         setDetail("");
+        setListId("");
         setIsEditMode(false);
     }
 
@@ -55,6 +65,18 @@ const Modal = ({isOpen, closeModal, selectedTask}) => {
                 className={`tmodal px-2 border${isOpen ? " slideUp" : ""}`}
                 onClick={e => e.stopPropagation()}
             >
+                <div className="form-group">
+                    <label>リスト</label>
+                    <select
+                        className="form-select"
+                        value={listId}
+                        onChange={e => setListId(parseInt(e.target.value))}
+                    >
+                        {lists.map(list => (
+                            <option key={list.id} value={list.id}>{list.name}</option>
+                        ))}
+                    </select>
+                </div>
                 <MDBInput
                     className="mb-2 mt-4"
                     name="title"
