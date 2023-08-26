@@ -84,14 +84,14 @@ const Sidebar = ({ isOpen }) => {
         >
             <MDBInput
                 ref={listNameRef}
-                className="mb-2 mt-4"
+                className="mt-4"
                 name="title"
                 label="リスト名"
                 type="text"
                 value={listName}
                 onChange={e => setListName(e.target.value)}
             />
-            <div className="mt-2 d-flex justify-content-between">
+            <div className="mt-3 d-flex justify-content-between">
                 <MDBBtn
                     color='secondary'
                     onClick={closeModal}

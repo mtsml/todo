@@ -77,7 +77,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
             </div>
             <MDBInput
                 ref={titleRef}
-                className="mb-2 mt-2"
+                className="mt-3"
                 name="title"
                 label="タイトル"
                 type="text"
@@ -85,6 +85,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                 onChange={e => setTitle(e.target.value)}
             />
             <MDBTextArea
+                className="mt-3"
                 name="detail"
                 label="説明"
                 type="textarea"
@@ -92,7 +93,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                 rows={4}
                 onChange={e => setDetail(e.target.value)}
             />
-            <div className="mt-2 d-flex justify-content-between">
+            <div className="mt-3 d-flex justify-content-between">
                 <MDBBtn
                     color='secondary'
                     onClick={cleanUp}
