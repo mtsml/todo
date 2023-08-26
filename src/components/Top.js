@@ -5,6 +5,7 @@ import Button from './Button';
 import Modal from './Modal';
 import Task from './Task';
 import Filter from './Filter';
+import Sidebar from './Sidebar';
 import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
 
@@ -54,6 +55,7 @@ const Top = () => {
         className="addBtnWrapper"
         onClick={setModalIsOpen}
       />
+      <Sidebar/>
       <Modal
         isOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
