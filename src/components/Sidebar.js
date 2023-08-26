@@ -7,7 +7,7 @@ const Sidebar = ({ isOpen }) => {
   const [list, setList] = useRecoilState(listState);
 
   return (
-    <div className={isOpen ? "pt-5 sidebar slideIn" : "mt-5 sidebar"}>
+    <div className={isOpen ? "pt-5 sidebar slideIn" : "pt-5 sidebar"}>
         {list?.map(l => (
             <div
                 key={l.id}
