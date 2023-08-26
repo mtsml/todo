@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import Header from './Header';
 import Footer from './Footer';
-import Modal from './Modal';
+import TaskModal from './TaskModal';
 import Task from './Task';
 import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
@@ -48,7 +48,7 @@ const Main = () => {
       <Footer
         setModalIsOpen={setModalIsOpen}
       />
-      <Modal
+      <TaskModal
         isOpen={modalIsOpen}
         closeModal={closeModal}
         selectedTask={todoList.find(task => task.id === selectedTaskId)}
