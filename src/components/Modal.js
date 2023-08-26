@@ -47,45 +47,53 @@ const Modal = ({isOpen, closeModal, selectedTask}) => {
     }
 
     return (
-        <div className={`tmodal px-2 border rounded-7${isOpen ? " slideUp" : ""}`}>
-            <MDBInput
-                className="mb-2 mt-4"
-                name="title"
-                label="タイトル"
-                type="text"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-            />
-            <MDBTextArea
-                name="detail"
-                label="説明"
-                type="textarea"
-                value={detail}
-                onChange={e => setDetail(e.target.value)}
-            />
-            <div className="mt-2 d-flex justify-content-between">
-                <MDBBtn
-                    color='secondary'
-                    onClick={cleanUp}
-                >
-                    閉じる
-                </MDBBtn>
-                {isEditMode && (
+        <div
+            className={`modal-overlay${isOpen ? " slideUp" : ""}`}
+            onClick={cleanUp}
+        >
+            <div
+                className={`tmodal px-2 border${isOpen ? " slideUp" : ""}`}
+                onClick={e => e.stopPropagation()}
+            >
+                <MDBInput
+                    className="mb-2 mt-4"
+                    name="title"
+                    label="タイトル"
+                    type="text"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                />
+                <MDBTextArea
+                    name="detail"
+                    label="説明"
+                    type="textarea"
+                    value={detail}
+                    onChange={e => setDetail(e.target.value)}
+                />
+                <div className="mt-2 d-flex justify-content-between">
                     <MDBBtn
-                        color='danger'
-                        onClick={removeTask}
+                        color='secondary'
+                        onClick={cleanUp}
                     >
-                        削除
+                        閉じる
                     </MDBBtn>
-                )}
-                <MDBBtn
-                    onClick={isEditMode ? updateTask : addTask }
-                >
-                    {isEditMode
-                        ? "保存"
-                        : "追加"
-                    }
-                </MDBBtn>
+                    {isEditMode && (
+                        <MDBBtn
+                            color='danger'
+                            onClick={removeTask}
+                        >
+                            削除
+                        </MDBBtn>
+                    )}
+                    <MDBBtn
+                        onClick={isEditMode ? updateTask : addTask }
+                    >
+                        {isEditMode
+                            ? "保存"
+                            : "追加"
+                        }
+                    </MDBBtn>
+                </div>
             </div>
         </div>
     )
