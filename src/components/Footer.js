@@ -1,13 +1,16 @@
 import React from 'react';
 import Button from './Button';
+import Filter from './Filter';
 
 
 const Footer = ({ setModalIsOpen }) => {
 
     return (
-        <footer className='addBtnWrapper border-top border-secondary'>
-            <Button icon="plus-circle" onClick={() => setModalIsOpen(true)}/>
-            <span>リスト編集</span>
+        <footer className='addBtnWrapper px-2 border-top border-secondary'>
+            <Filter/>
+            <Button
+                onClick={setModalIsOpen}
+            />
         </footer>
     )
 }

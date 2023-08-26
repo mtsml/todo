@@ -12,9 +12,12 @@ body {
 }
  
 .addBtnWrapper {
+    width: 100%;
+    background-color: #FFF;
+    display: flex;
+    align-items: center;
     position: fixed;
     bottom: 25px;
-    right: 25px;
     padding-top: 15px; 
 }
 

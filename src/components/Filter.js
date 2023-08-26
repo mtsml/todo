@@ -20,10 +20,11 @@ const Filter = () => {
   
     return (
       <>
-        <MDBTabs pills justify className='mx-1'>
+        <MDBTabs pills justify className='w-100'>
           {filter.options?.map(option => (
             <MDBTabsItem key={option.key}>
               <MDBTabsLink
+                className="p-3"
                 onClick={() => handleClick(option.key)}
                 active={option.key === filter.activeKey}
               >

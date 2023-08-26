@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import Header from './Header';
-import Button from './Button';
+import Footer from './Footer';
 import Modal from './Modal';
 import Task from './Task';
-import Filter from './Filter';
 import Sidebar from './Sidebar';
 import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
@@ -43,7 +42,6 @@ const Top = () => {
   return (
     <>
       <Header/>
-      <Filter/>
       {todoList?.map(todo => <Task
                                 key={todo.id}
                                 task={todo}
@@ -51,9 +49,8 @@ const Top = () => {
                                 checkTask={checkTask}
                             />
       )}
-      <Button
-        className="addBtnWrapper"
-        onClick={setModalIsOpen}
+      <Footer
+        setModalIsOpen={setModalIsOpen}
       />
       <Sidebar/>
       <Modal
