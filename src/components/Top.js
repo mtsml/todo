@@ -35,6 +35,10 @@ const Top = () => {
     setSelectedTaskId(null);
   }
 
+  const removeTask = (id) => {
+    setTodoList(todoList.filter(todo => todo.id !== id));
+  }
+
   return (
     <>
       <Header/>
@@ -56,6 +60,7 @@ const Top = () => {
         selectedTask={todoList.find(task => task.id === selectedTaskId)}
         addTask={addTask}
         updateTask={updateTask}
+        removeTask={removeTask}
       />
     </>
   );

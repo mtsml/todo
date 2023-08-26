@@ -23,6 +23,7 @@ class Modal extends Component {
     }
 
     componentDidUpdate(prev) {
+        // モダールオープン
         if (this.props.isOpen && (prev.isOpen !== this.props.isOpen)) {
             if (this.props.selectedTask) {
                 this.setState({
@@ -33,6 +34,15 @@ class Modal extends Component {
             } else {
                 this.ref.current.focus();
             }
+        }
+
+        // モーダルクローズ
+        if (!this.props.isOpen && ((prev.isOpen !== this.props.isOpen))) {
+            this.setState({
+                isEditMode: false,
+                title: "",
+                detail: ""
+            });
         }
     }
 
@@ -45,11 +55,12 @@ class Modal extends Component {
         this.state.isEditMode
             ? updateTask(this.props.selectedTask.id, this.state.title, this.state.detail)
             : addTask(this.state.title, this.state.detail);
-        this.setState({
-            isEditMode: false,
-            title: "",
-            detail: ""
-        });
+        setModalIsOpen(false);
+    }
+
+    handleRemove = () => {
+        const { removeTask, setModalIsOpen } = this.props;
+        removeTask(this.props.selectedTask.id);
         setModalIsOpen(false);
     }
 
@@ -79,13 +90,18 @@ class Modal extends Component {
                             />
                         </MDBModalBody>
 
-                        <MDBModalFooter>
+                        <MDBModalFooter className="d-flex justify-content-between">
                             <MDBBtn color='secondary' onClick={() => setModalIsOpen(false)}>
-                                やめる
+                                閉じる
                             </MDBBtn>
+                            {this.state.isEditMode && (
+                                <MDBBtn color='danger' onClick={this.handleRemove}>
+                                    削除
+                                </MDBBtn>
+                            )}
                             <MDBBtn onClick={this.handleSubmit}>
                                 {this.state.isEditMode
-                                    ? "更新"
+                                    ? "保存"
                                     : "追加"
                                 }
                             </MDBBtn>
