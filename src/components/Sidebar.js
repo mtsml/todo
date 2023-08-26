@@ -9,12 +9,8 @@ const Sidebar = () => {
   const sidebar = useRecoilValue(sidebarState);
   const [list, setList] = useRecoilState(listState);
 
-  if (!sidebar.isOpen) {
-    return;
-  }
-
   return (
-    <div class="sidebar">
+    <div className={sidebar.isOpen ? "sidebar slideIn" : "sidebar"}>
         {list?.map(l => <li class="sidebar-item">{l.name}</li>)}
     </div>
   );

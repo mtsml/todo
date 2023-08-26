@@ -6,4 +6,10 @@
     z-index: 1;
     right: 0;
     background: #FFF;
+    transition: all 0.5s ease;
+    transform: translateX(100%);
+}
+
+.sidebar.slideIn {
+    transform: translateX(0%);
 }
