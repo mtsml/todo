@@ -8,7 +8,7 @@ import { taskState } from '../atoms/taskState';
 import { taskSelector } from '../atoms/taskSelector';
 
 
-const Top = () => {
+const Main = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
 
@@ -41,13 +41,16 @@ const Top = () => {
   return (
     <>
       <Header/>
-      {todoList?.map(todo => <Task
-                                key={todo.id}
-                                task={todo}
-                                selectTask={selectTask}
-                                checkTask={checkTask}
-                            />
-      )}
+      <main>
+      {todoList?.map(todo => (
+        <Task
+            key={todo.id}
+            task={todo}
+            selectTask={selectTask}
+            checkTask={checkTask}
+        />
+      ))}
+      </main>
       <Footer
         setModalIsOpen={setModalIsOpen}
       />
@@ -63,4 +66,4 @@ const Top = () => {
   );
 }
 
-export default Top;
+export default Main;

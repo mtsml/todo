@@ -4,12 +4,12 @@ import { RecoilRoot } from 'recoil';
 import './index.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import Top from './components/Top';
+import Main from './components/Main';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <RecoilRoot>
-        <Top />
+        <Main />
     </RecoilRoot>
 );
