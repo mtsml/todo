@@ -12,7 +12,9 @@ const Sidebar = ({ isOpen }) => {
   const [listName, setListName] = useState("");
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
+
   const [list, setList] = useRecoilState(listState);
+
   const listNameRef = useRef("");
 
   const selectList = (list) => {
@@ -105,15 +107,9 @@ const Sidebar = ({ isOpen }) => {
                     </MDBBtn>
                 )}
                 <MDBBtn
-                    onClick={selectedList
-                        ? updateList
-                        : addList
-                    }
+                    onClick={selectedList ? updateList : addList}
                 >
-                    {selectedList
-                        ? "更新"
-                        : "追加"
-                    }
+                    {selectedList ? "更新" : "追加"}
                 </MDBBtn>
             </div>
         </Modal>

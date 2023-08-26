@@ -14,7 +14,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
     const [listId, setListId] = useState("");
-    const [isEditMode, setIsEditMode] = useState(false);
+
     const [todoList, setTodoList] = useRecoilState(taskState);
     const lists = useRecoilValue(listState);
     const titleRef = useRef("");
@@ -24,7 +24,6 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
             setTitle(selectedTask.value);
             setDetail(selectedTask.detail);
             setListId(selectedTask.listId)
-            setIsEditMode(true);
         } else {
             setListId(activeListId);
             titleRef.current?.focus();
@@ -56,7 +55,6 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
         setTitle("");
         setDetail("");
         setListId("");
-        setIsEditMode(false);
     }
 
     return (
@@ -101,7 +99,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                 >
                     閉じる
                 </MDBBtn>
-                {isEditMode && (
+                {selectedTask && (
                     <MDBBtn
                         color='danger'
                         onClick={removeTask}
@@ -110,16 +108,14 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                     </MDBBtn>
                 )}
                 <MDBBtn
-                    onClick={isEditMode ? updateTask : addTask }
+                    onClick={selectedTask ? updateTask : addTask }
                 >
-                    {isEditMode
-                        ? "保存"
-                        : "追加"
-                    }
+                    {selectedTask ? "保存" : "追加"}
                 </MDBBtn>
             </div>
         </Modal>
     )
 }
+
 
 export default TaskModal;
