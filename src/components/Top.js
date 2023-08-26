@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import Header from './Header';
-import Footer from './Footer';
+import Button from './Button';
 import Modal from './Modal';
 import Task from './Task';
 import { taskState } from '../atoms/taskState';
@@ -43,8 +43,9 @@ const Top = () => {
                                 selectTask={selectTask}
                             />
       )}
-      <Footer
-        setModalIsOpen={setModalIsOpen}
+      <Button
+        className="addBtnWrapper"
+        onClick={setModalIsOpen}
       />
       <Modal
         isOpen={modalIsOpen}

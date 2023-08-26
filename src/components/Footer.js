@@ -6,9 +6,8 @@ const Footer = ({ setModalIsOpen }) => {
 
     return (
         <footer className='addBtnWrapper border-top border-secondary'>
-            <Button icon="home" />
             <Button icon="plus-circle" onClick={() => setModalIsOpen(true)}/>
-            <Button icon="search"/>
+            <span>リスト編集</span>
         </footer>
     )
 }

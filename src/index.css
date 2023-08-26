@@ -58,11 +58,6 @@ body {
   .addBtnWrapper {
     position: fixed;
     bottom: 25px;
-    padding-top: 15px;
-    
-    width: 100vw;
-    
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    right: 25px;
+    padding-top: 15px; 
   }

@@ -2,12 +2,12 @@ import React from 'react';
 import { MDBIcon } from 'mdb-react-ui-kit';
 
 
-const Button = ({ icon, size, onClick, className }) => {
+const Button = ({ size, onClick, className }) => {
     return (
         <MDBIcon
             fas
-            icon={icon}
-            size={size || "2x"}
+            icon="plus-circle"
+            size={size || "3x"}
             onClick={onClick}
             className={className}
         >
