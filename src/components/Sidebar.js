@@ -8,7 +8,7 @@ const Sidebar = ({ isOpen }) => {
 
   return (
     <div className={isOpen ? "pt-5 sidebar slideIn" : "pt-5 sidebar"}>
-        {list?.map(l => (
+        {list.map(l => (
             <div
                 key={l.id}
                 className="d-flex align-items-top m-1 p-2"
