@@ -6,7 +6,7 @@ const Task = ({ task, handleCheck, selectTask }) => {
 
     return (
         <div
-            className="d-flex m-1 p-2 border border-secondary rounded"
+            className="d-flex m-1 p-2 border-bottom border-secondary"
             onClick={() => selectTask(task.id)}
         >
             <MDBCheckbox
