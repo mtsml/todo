@@ -2,7 +2,6 @@ import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { sidebarState } from '../atoms/SidebarState';
 import { listState } from '../atoms/listState';
-import './sidebar.css';
 
 
 const Sidebar = () => {
