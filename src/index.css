@@ -10,14 +10,20 @@ body {
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
- 
+
+header {
+    background-color: #FFF;
+    position: fixed;
+    top: 0;
+}
+
 .addBtnWrapper {
     width: 100%;
     background-color: #FFF;
     display: flex;
     align-items: center;
     position: fixed;
-    bottom: 25px;
+    bottom: 0;
     padding-top: 15px; 
 }
 
@@ -35,4 +41,19 @@ body {
 
 .sidebar.slideIn {
     transform: translateX(0%);
+}
+
+.tmodal {
+    height: 50%;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 3;
+    background: #FFF;
+    transition: all 0.4s ease;
+    transform: translateY(100%);
+}
+
+.tmodal.slideUp {
+    transform: translateY(0%);
 }

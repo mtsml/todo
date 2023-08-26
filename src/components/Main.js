@@ -20,22 +20,13 @@ const Main = () => {
   }
 
   const selectTask = (id) => {
-    setModalIsOpen(true);
     setSelectedTaskId(id);
+    setModalIsOpen(true);
   }
 
-  const addTask = (title, detail) => {
-    const id = crypto.randomUUID();
-    setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
-  }
-
-  const updateTask = (id, title, detail) => {
-    setTodoList(todoList.map(todo => todo.id === id ? {...todo, value: title, detail} : todo))
+  const closeModal = () => {
+    setModalIsOpen(false);
     setSelectedTaskId(null);
-  }
-
-  const removeTask = (id) => {
-    setTodoList(todoList.filter(todo => todo.id !== id));
   }
 
   return (
@@ -56,11 +47,8 @@ const Main = () => {
       />
       <Modal
         isOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
+        closeModal={closeModal}
         selectedTask={todoList.find(task => task.id === selectedTaskId)}
-        addTask={addTask}
-        updateTask={updateTask}
-        removeTask={removeTask}
       />
     </>
   );

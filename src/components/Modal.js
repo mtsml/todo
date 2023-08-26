@@ -1,117 +1,94 @@
-import React, { Component, createRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import {
     MDBBtn,
     MDBInput,
-    MDBTextArea,
-    MDBModal,
-    MDBModalDialog,
-    MDBModalContent,
-    MDBModalBody,
-    MDBModalFooter,
+    MDBTextArea
 } from 'mdb-react-ui-kit'
+import { taskState } from '../atoms/taskState';
 
 
-class Modal extends Component {
-    constructor(props) {
-        super(props);
-        this.ref = createRef(null);
-        this.state = {
-            isEditMode: false,
-            title: "",
-            detail: ""
+const Modal = ({isOpen, closeModal, selectedTask}) => {
+    const [title, setTitle] = useState("");
+    const [detail, setDetail] = useState("");
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [todoList, setTodoList] = useRecoilState(taskState);
+
+    useEffect(() => {
+        if (isOpen && selectedTask) {
+            setTitle(selectedTask.value);
+            setDetail(selectedTask.detail);
+            setIsEditMode(true);
         }
+    }, [isOpen, selectedTask])
+
+ 
+    const addTask = () => {
+        const id = crypto.randomUUID();
+        setTodoList([...todoList, { id, value: title, detail, done: false, listId: 1 }]);
+        cleanUp();
     }
 
-    componentDidUpdate(prev) {
-        // モダールオープン
-        if (this.props.isOpen && (prev.isOpen !== this.props.isOpen)) {
-            if (this.props.selectedTask) {
-                this.setState({
-                    isEditMode: true,
-                    title: this.props.selectedTask.value,
-                    detail: this.props.selectedTask.detail
-                })
-            } else {
-                this.ref.current.focus();
-            }
-        }
-
-        // モーダルクローズ
-        if (!this.props.isOpen && ((prev.isOpen !== this.props.isOpen))) {
-            this.setState({
-                isEditMode: false,
-                title: "",
-                detail: ""
-            });
-        }
+    const updateTask = () => {
+        setTodoList(todoList.map(todo => todo.id === selectedTask.id ? {...todo, value: title, detail} : todo))
+        cleanUp();
     }
 
-    handleChange = (e) => {
-        this.setState({[e.target.name]: e.target.value});
+    const removeTask = () => {
+        setTodoList(todoList.filter(todo => todo.id !== selectedTask.id));
+        cleanUp();
     }
 
-    handleSubmit = () => {
-        const { addTask, updateTask, setModalIsOpen } = this.props;
-        this.state.isEditMode
-            ? updateTask(this.props.selectedTask.id, this.state.title, this.state.detail)
-            : addTask(this.state.title, this.state.detail);
-        setModalIsOpen(false);
+    const cleanUp = () => {
+        closeModal();
+        setTitle("");
+        setDetail("");
+        setIsEditMode(false);
     }
 
-    handleRemove = () => {
-        const { removeTask, setModalIsOpen } = this.props;
-        removeTask(this.props.selectedTask.id);
-        setModalIsOpen(false);
-    }
-
-    render() {
-        const { isOpen, setModalIsOpen } = this.props;
-    
-        return (
-            <MDBModal show={isOpen} setShow={setModalIsOpen} tabIndex='-1'>
-                <MDBModalDialog>
-                    <MDBModalContent>
-                        <MDBModalBody>
-                            <MDBInput
-                                className="mb-2"
-                                ref={this.ref}
-                                name="title"
-                                label="タイトル"
-                                type="text"
-                                value={this.state.title}
-                                onChange={this.handleChange}
-                            />
-                            <MDBTextArea
-                                name="detail"
-                                label="説明"
-                                type="textarea"
-                                value={this.state.detail}
-                                onChange={this.handleChange}
-                            />
-                        </MDBModalBody>
-
-                        <MDBModalFooter className="d-flex justify-content-between">
-                            <MDBBtn color='secondary' onClick={() => setModalIsOpen(false)}>
-                                閉じる
-                            </MDBBtn>
-                            {this.state.isEditMode && (
-                                <MDBBtn color='danger' onClick={this.handleRemove}>
-                                    削除
-                                </MDBBtn>
-                            )}
-                            <MDBBtn onClick={this.handleSubmit}>
-                                {this.state.isEditMode
-                                    ? "保存"
-                                    : "追加"
-                                }
-                            </MDBBtn>
-                        </MDBModalFooter>
-                    </MDBModalContent>
-                </MDBModalDialog>
-            </MDBModal>
-        )
-    }
+    return (
+        <div className={`tmodal px-2 border rounded-7${isOpen ? " slideUp" : ""}`}>
+            <MDBInput
+                className="mb-2 mt-4"
+                name="title"
+                label="タイトル"
+                type="text"
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+            />
+            <MDBTextArea
+                name="detail"
+                label="説明"
+                type="textarea"
+                value={detail}
+                onChange={e => setDetail(e.target.value)}
+            />
+            <div className="mt-2 d-flex justify-content-between">
+                <MDBBtn
+                    color='secondary'
+                    onClick={cleanUp}
+                >
+                    閉じる
+                </MDBBtn>
+                {isEditMode && (
+                    <MDBBtn
+                        color='danger'
+                        onClick={removeTask}
+                    >
+                        削除
+                    </MDBBtn>
+                )}
+                <MDBBtn
+                    onClick={isEditMode ? updateTask : addTask }
+                >
+                    {isEditMode
+                        ? "保存"
+                        : "追加"
+                    }
+                </MDBBtn>
+            </div>
+        </div>
+    )
 }
-
 
 export default Modal;
