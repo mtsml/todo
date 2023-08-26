@@ -1,4 +1,6 @@
-import { atom } from 'recoil';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import { listState } from './listState';
+import { filterState } from './filterState';
 
 
 export const taskState = atom({
@@ -32,4 +34,58 @@ export const taskState = atom({
         { id: 26, value: "tassk6", detail: "task6の説明文です", done: true, listId: 2 },
         { id: 27, value: "task7", detail: "task7の説明文です", done: false, listId: 2 },
       ]
-})
+});
+
+
+export const taskSelector = selector({
+    key: 'taskSelector',
+    get: ({get}) => {
+      const list = get(listState);
+      const task = get(taskState);
+      const filter = get(filterState);
+
+      const activeListId = list.find(l => l.isActive).id;
+      const activeFilterKey = filter.activeKey;
+      return task
+        ?.filter(t => t.listId === activeListId)
+        ?.filter(t => activeFilterKey === "all"
+                  || (activeFilterKey === "active" && !t.done)
+                  || (activeFilterKey === "done" && t.done)
+                );
+    },
+});
+
+
+export const useTask = () => {
+    const [tasks, setTodoList] = useRecoilState(taskState);
+    const activeListTasks = useRecoilValue(taskSelector);
+
+    const addTask = (title, detail, listId) => {
+        const id = crypto.randomUUID();
+        setTodoList([...tasks, { id, value: title, detail, done: false, listId }]);
+    }
+
+    const updateTask = (id, title, detail, listId) => {
+        setTodoList(tasks.map(task => task.id === id
+            ? {...task, value: title, detail, listId}
+            : task
+        ))
+    }
+
+    const checkTask = (id, checked) => {
+        setTodoList(activeListTasks.map(todo => todo.id === id ? {...todo, done: checked} : todo));    
+    }
+
+    const removeTask = (id) => {
+        setTodoList(tasks.filter(task => task.id !== id));
+    }
+
+    return {
+        tasks,
+        addTask,
+        updateTask,
+        removeTask,
+        checkTask,
+        activeListTasks
+    }
+}

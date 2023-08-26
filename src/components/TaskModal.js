@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import {
     MDBBtn,
     MDBInput,
     MDBTextArea
 } from 'mdb-react-ui-kit'
 import Modal from './Modal';
-import { taskState } from '../atoms/taskState';
-import { listState } from '../atoms/listState';
+import { useTask } from '../atoms/taskState';
+import { useList } from '../atoms/listState';
 
 
 const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
@@ -15,8 +14,8 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
     const [detail, setDetail] = useState("");
     const [listId, setListId] = useState("");
 
-    const [todoList, setTodoList] = useRecoilState(taskState);
-    const lists = useRecoilValue(listState);
+    const { tasks, addTask, updateTask, removeTask } = useTask();
+    const { lists } = useList();
     const titleRef = useRef("");
 
     const callback = () => {
@@ -28,26 +27,6 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
             setListId(activeListId);
             titleRef.current?.focus();
         }
-    }
-
-    const addTask = () => {
-        const id = crypto.randomUUID();
-        const newTodoList = [...todoList, { id, value: title, detail, done: false, listId }]
-        setTodoList(newTodoList);
-        cleanUp();
-    }
-
-    const updateTask = () => {
-        setTodoList(todoList.map(todo => todo.id === selectedTask.id
-            ? {...todo, value: title, detail, listId}
-            : todo
-        ))
-        cleanUp();
-    }
-
-    const removeTask = () => {
-        setTodoList(todoList.filter(todo => todo.id !== selectedTask.id));
-        cleanUp();
     }
 
     const cleanUp = () => {
@@ -103,13 +82,18 @@ const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
                 {selectedTask && (
                     <MDBBtn
                         color='danger'
-                        onClick={removeTask}
+                        onClick={() => {removeTask(selectedTask.id); closeModal();}}
                     >
                         削除
                     </MDBBtn>
                 )}
                 <MDBBtn
-                    onClick={selectedTask ? updateTask : addTask }
+                    onClick={() => {
+                        selectedTask
+                            ? updateTask(selectedTask.id, title, detail, listId)
+                            : addTask(title, detail, listId)
+                        closeModal();
+                    }}
                 >
                     {selectedTask ? "保存" : "追加"}
                 </MDBBtn>

@@ -1,44 +1,23 @@
 import React, { useState, useRef } from 'react';
-import { useRecoilState } from 'recoil';
 import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
 import Modal from './Modal';
-import { listState } from '../atoms/listState';
+import { useList } from '../atoms/listState';
 
 
 const Sidebar = ({ isOpen }) => {
   const [listName, setListName] = useState("");
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
-
-  const [list, setList] = useRecoilState(listState);
+  const { lists, addList, updateList, removeList } = useList();
 
   const listNameRef = useRef("");
 
   const selectList = (list) => {
     setSelectedList(list);
     setEditModalIsOpen(true);
-  }
-
-  const addList = () => {
-    const maxListId = list.reduce((prev, cur) => prev.id > cur.id ? prev.id : cur.id)
-    setList([...list, { id: maxListId + 1, name: listName, isActive: false }]);
-    closeModal();
-  }
-
-  const updateList = () => {
-    setList(list.map(l => l.id === selectedList.id
-        ? {...l, name: listName}
-        : l
-    ));
-    closeModal();
-  }
-
-  const removeList = () => {
-    setList(list.filter(l => l.id !== selectedList.id));
-    closeModal();
   }
 
   const callback = () => {
@@ -57,7 +36,7 @@ const Sidebar = ({ isOpen }) => {
 
   return (
     <div className={isOpen ? "pt-5 sidebar slideIn" : "pt-5 sidebar"}>
-        {list.map(l => (
+        {lists.map(l => (
             <div
                 key={l.id}
                 className="d-flex align-items-top m-1 p-2"
@@ -101,13 +80,18 @@ const Sidebar = ({ isOpen }) => {
                 {selectedList && (
                     <MDBBtn
                         color='danger'
-                        onClick={removeList}
+                        onClick={() => {removeList(selectedList.id); closeModal()}}
                     >
                         削除
                     </MDBBtn>
                 )}
                 <MDBBtn
-                    onClick={selectedList ? updateList : addList}
+                    onClick={() => {
+                        selectedList
+                            ? updateList(selectedList.id, listName)
+                            : addList(listName)
+                        closeModal();
+                    }}
                 >
                     {selectedList ? "更新" : "追加"}
                 </MDBBtn>
