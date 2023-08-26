@@ -25,7 +25,7 @@ const Footer = ({ setModalIsOpen }) => {
                 {filter.options.map(option => (
                     <MDBTabsItem key={option.key}>
                         <MDBTabsLink
-                            className="p-3"
+                            className="p-3 fs-6"
                             onClick={() => handleClick(option.key)}
                             active={option.key === filter.activeKey}
                         >

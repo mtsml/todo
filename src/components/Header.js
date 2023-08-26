@@ -21,10 +21,11 @@ export const Header = () => {
   return (
     <header className='d-flex justify-content-between'>
         <div className="overflow-x-scroll">
-            <MDBTabs className='mb-3 text-nowrap ' style={{width: "max-content"}}>
+            <MDBTabs className='mb-1 text-nowrap' style={{width: "max-content"}}>
                 {list && list.map(l => (
                     <MDBTabsItem key={l.id}>
                         <MDBTabsLink
+                            className="py-3 px-3 fs-6"
                             onClick={() => !l.isActive && handleFillClick(l.id)}
                             active={l.isActive}
                         >
