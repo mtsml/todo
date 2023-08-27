@@ -34,7 +34,7 @@ export const Header = () => {
             </MDBTabs>
         </div>
         <i
-            className="fas fa-bars fa-2x pe-2 pt-2"
+            className={`fas fa-2x pe-2 pt-2 ${sidebarIsOpen ? "fa-times" : "fa-bars"}`}
             style={{zIndex: 10}}
             onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
         />
