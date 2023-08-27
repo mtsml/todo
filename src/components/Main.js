@@ -26,10 +26,10 @@ const Main = () => {
     <>
       <Header/>
       <main>
-        {activeListTasks?.map(todo => (
+        {activeListTasks?.map(task => (
             <Task
-                key={todo.id}
-                task={todo}
+                key={task.id}
+                task={task}
                 selectTask={selectTask}
                 checkTask={checkTask}
             />

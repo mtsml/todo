@@ -20,7 +20,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask}) => {
 
     const callback = () => {
         if (selectedTask) {
-            setTitle(selectedTask.value);
+            setTitle(selectedTask.title);
             setDetail(selectedTask.detail);
             setListId(selectedTask.listId)
         } else {

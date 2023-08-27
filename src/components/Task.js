@@ -21,7 +21,7 @@ const Task = ({ task, selectTask, checkTask }) => {
                 style={task.done ? { textDecoration: "line-through", color: "rgb(159, 166, 178)" } : {}}
                 onClick={() => selectTask(task)}
             >
-                {task.value}
+                {task.title}
             </div>
         </div>
     )
