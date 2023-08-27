@@ -1,46 +1,41 @@
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
 import {
-  MDBIcon,
   MDBTabs,
   MDBTabsItem,
   MDBTabsLink
 } from 'mdb-react-ui-kit';
-import { listState } from '../atoms/listState';
+import { useList } from '../atoms/listState';
 import Sidebar from './Sidebar';
 
 
 export const Header = () => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  const [list, setList] = useRecoilState(listState);
+  const { lists, setList } = useList();
 
   const handleFillClick = (id) => {
-    setList(list.map(l => ({...l, isActive: l.id === id})))
+    setList(lists.map(l => ({...l, isActive: l.id === id})))
   };
 
   return (
     <header className='d-flex justify-content-between'>
         <div className="overflow-x-scroll">
             <MDBTabs className='mb-1 text-nowrap' style={{width: "max-content"}}>
-                {list && list.map(l => (
-                    <MDBTabsItem key={l.id}>
+                {lists && lists.map(list => (
+                    <MDBTabsItem key={list.id}>
                         <MDBTabsLink
                             className="py-3 px-3 fs-6"
-                            onClick={() => !l.isActive && handleFillClick(l.id)}
-                            active={l.isActive}
+                            onClick={() => !list.isActive && handleFillClick(list.id)}
+                            active={list.isActive}
                         >
-                            {l.name}
+                            {list.name}
                         </MDBTabsLink>
                     </MDBTabsItem>
                 ))}
             </MDBTabs>
         </div>
-        <MDBIcon
-            className="pe-2 pt-2"
+        <i
+            className="fas fa-bars fa-2x pe-2 pt-2"
             style={{zIndex: 10}}
-            fas
-            icon="bars"
-            size="2x"
             onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
         />
         <Sidebar

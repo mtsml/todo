@@ -33,6 +33,7 @@ export const useList = () => {
     
     return {
         lists,
+        setList,
         addList,
         updateList,
         removeList
