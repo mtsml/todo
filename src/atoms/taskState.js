@@ -37,8 +37,8 @@ export const taskState = atom({
 });
 
 
-export const taskSelector = selector({
-    key: 'taskSelector',
+export const activeLisTaskSelector = selector({
+    key: 'activeLisTaskSelector',
     get: ({get}) => {
       const list = get(listState);
       const task = get(taskState);
@@ -58,7 +58,7 @@ export const taskSelector = selector({
 
 export const useTask = () => {
     const [tasks, setTodoList] = useRecoilState(taskState);
-    const activeListTasks = useRecoilValue(taskSelector);
+    const activeListTasks = useRecoilValue(activeLisTaskSelector);
 
     const addTask = (title, detail, listId) => {
         const id = crypto.randomUUID();

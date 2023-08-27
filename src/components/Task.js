@@ -19,7 +19,7 @@ const Task = ({ task, selectTask, checkTask }) => {
             <div
                 className={`w-100 ms-3 border-bottom border-secondary fw-bold${task.done ? " fw-light text-decoration-line-through" : ""}`}
                 style={task.done ? { textDecoration: "line-through", color: "rgb(159, 166, 178)" } : {}}
-                onClick={() => selectTask(task.id)}
+                onClick={() => selectTask(task)}
             >
                 {task.value}
             </div>

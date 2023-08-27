@@ -9,13 +9,13 @@ import { useTask } from '../atoms/taskState';
 import { useList } from '../atoms/listState';
 
 
-const TaskModal = ({isOpen, closeModal, selectedTask, activeListId}) => {
+const TaskModal = ({isOpen, closeModal, selectedTask}) => {
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
     const [listId, setListId] = useState("");
 
-    const { tasks, addTask, updateTask, removeTask } = useTask();
-    const { lists } = useList();
+    const { addTask, updateTask, removeTask } = useTask();
+    const { lists, activeListId } = useList();
     const titleRef = useRef("");
 
     const callback = () => {

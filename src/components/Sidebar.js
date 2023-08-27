@@ -11,6 +11,7 @@ const Sidebar = ({ isOpen }) => {
   const [listName, setListName] = useState("");
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
+
   const { lists, addList, updateList, removeList } = useList();
 
   const listNameRef = useRef("");
@@ -36,16 +37,16 @@ const Sidebar = ({ isOpen }) => {
 
   return (
     <div className={isOpen ? "pt-5 sidebar slideIn" : "pt-5 sidebar"}>
-        {lists.map(l => (
+        {lists.map(list => (
             <div
-                key={l.id}
+                key={list.id}
                 className="d-flex align-items-top m-1 p-2"
-                onClick={() => selectList(l)}
+                onClick={() => selectList(list)}
             >
                 <div
                     className="w-100 ms-3 border-bottom border-secondary"
                 >
-                    {l.name}
+                    {list.name}
                 </div>
             </div>
         ))}

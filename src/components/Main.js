@@ -4,24 +4,22 @@ import Footer from './Footer';
 import TaskModal from './TaskModal';
 import Task from './Task';
 import { useTask } from '../atoms/taskState';
-import { useList } from '../atoms/listState';
 
 
 const Main = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const { activeListTasks, checkTask } = useTask();
-  const { activeListId } = useList();
 
-  const selectTask = (id) => {
-    setSelectedTaskId(id);
+  const selectTask = (task) => {
+    setSelectedTask(task);
     setModalIsOpen(true);
   }
 
   const closeModal = () => {
     setModalIsOpen(false);
-    setSelectedTaskId(null);
+    setSelectedTask(null);
   }
 
   return (
@@ -38,13 +36,12 @@ const Main = () => {
         ))}
       </main>
       <Footer
-        setModalIsOpen={setModalIsOpen}
+          setModalIsOpen={setModalIsOpen}
       />
       <TaskModal
-        isOpen={modalIsOpen}
-        closeModal={closeModal}
-        selectedTask={activeListTasks.find(task => task.id === selectedTaskId)}
-        activeListId={activeListId}
+          isOpen={modalIsOpen}
+          closeModal={closeModal}
+          selectedTask={selectedTask}
       />
     </>
   );
