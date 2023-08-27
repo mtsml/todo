@@ -51,10 +51,10 @@ const Sidebar = ({ isOpen }) => {
             </div>
         ))}
         <div
-            className="d-flex align-items-center m-1 p-2"
+            className="d-flex align-items-center m-1 p-2 text-primary"
             onClick={() => setEditModalIsOpen(true)}
         >
-            <i className="ps-3 pe-2 fas fa-plus fa-lg text-secondary"></i>
+            <i className="ps-3 pe-2 fas fa-plus fa-lg"></i>
             <span>新しいリスト</span>
         </div>
         <Modal
