@@ -27,6 +27,7 @@ export const useList = () => {
     }
 
     const updateList = (id, title) => {
+        console.log(id, title)
         setList(lists.map(l => l.id === id
             ? {...l, title}
             : l

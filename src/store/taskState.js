@@ -39,11 +39,13 @@ export const useTask = () => {
     }
 
     const updateTask = async (id, param) => {
+        console.log(id, param)
         const data = await taskAPI.updateTask(id, param);
         setTask(tasks.map(task => task.id === data.id
             ? data
             : task
         ))
+        console.log(data)
     }
 
     const removeTask = async (id) => {
