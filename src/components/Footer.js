@@ -6,7 +6,7 @@ import {
     MDBTabsItem,
     MDBTabsLink
 } from 'mdb-react-ui-kit';
-import { filterState } from '../atoms/filterState';
+import { filterState } from '../store/filterState';
 
 
 const Footer = ({ setModalIsOpen }) => {

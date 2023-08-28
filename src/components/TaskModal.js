@@ -1,15 +1,11 @@
 import React, { useState, useRef } from 'react';
-import {
-    MDBBtn,
-    MDBInput,
-    MDBTextArea
-} from 'mdb-react-ui-kit'
+import { MDBBtn, MDBInput, MDBTextArea } from 'mdb-react-ui-kit'
 import Modal from './Modal';
-import { useTask } from '../atoms/taskState';
-import { useList } from '../atoms/listState';
+import { useTask } from '../store/taskState';
+import { useList } from '../store/listState';
 
 
-const TaskModal = ({isOpen, closeModal, selectedTask}) => {
+const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
     const [listId, setListId] = useState("");
@@ -47,10 +43,10 @@ const TaskModal = ({isOpen, closeModal, selectedTask}) => {
                 <select
                     className="form-select"
                     value={listId}
-                    onChange={e => setListId(parseInt(e.target.value))}
+                    onChange={e => setListId(Number(e.target.value))}
                 >
                     {lists.map(list => (
-                        <option key={list.id} value={list.id}>{list.name}</option>
+                        <option key={list.id} value={list.id}>{list.title}</option>
                     ))}
                 </select>
             </div>
@@ -82,7 +78,7 @@ const TaskModal = ({isOpen, closeModal, selectedTask}) => {
                 {selectedTask && (
                     <MDBBtn
                         color='danger'
-                        onClick={() => {removeTask(selectedTask.id); closeModal();}}
+                        onClick={() => { removeTask(selectedTask.id); closeModal(); }}
                     >
                         削除
                     </MDBBtn>
@@ -90,8 +86,8 @@ const TaskModal = ({isOpen, closeModal, selectedTask}) => {
                 <MDBBtn
                     onClick={() => {
                         selectedTask
-                            ? updateTask(selectedTask.id, title, detail, listId)
-                            : addTask(title, detail, listId)
+                            ? updateTask(selectedTask.id, {title, detail, listId})
+                            : addTask({title, detail, listId})
                         closeModal();
                     }}
                 >

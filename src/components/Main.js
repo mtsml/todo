@@ -3,14 +3,14 @@ import Header from './Header';
 import Footer from './Footer';
 import TaskModal from './TaskModal';
 import Task from './Task';
-import { useTask } from '../atoms/taskState';
+import { useTaskHook } from '../hooks/useTask';
 
 
 const Main = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const { activeListTasks, checkTask } = useTask();
+  const { activeListTasks, checkTask } = useTaskHook();
 
   const selectTask = (task) => {
     setSelectedTask(task);
@@ -24,24 +24,24 @@ const Main = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <main>
         {activeListTasks?.map(task => (
-            <Task
-                key={task.id}
-                task={task}
-                selectTask={selectTask}
-                checkTask={checkTask}
-            />
+          <Task
+            key={task.id}
+            task={task}
+            selectTask={selectTask}
+            checkTask={checkTask}
+          />
         ))}
       </main>
       <Footer
-          setModalIsOpen={setModalIsOpen}
+        setModalIsOpen={setModalIsOpen}
       />
       <TaskModal
-          isOpen={modalIsOpen}
-          closeModal={closeModal}
-          selectedTask={selectedTask}
+        isOpen={modalIsOpen}
+        closeModal={closeModal}
+        selectedTask={selectedTask}
       />
     </>
   );

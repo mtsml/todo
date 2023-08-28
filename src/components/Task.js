@@ -9,16 +9,16 @@ const Task = ({ task, selectTask, checkTask }) => {
             className="d-flex align-items-top m-1 p-2"
         >
             <MDBIcon
-                far={!task.done}
+                far={!task.completed}
                 className="pt-3"
-                icon={task.done ? "check" : "circle"}
-                color={task.done ? "primary" : "secondary"}
+                icon={task.completed ? "check" : "circle"}
+                color={task.completed ? "primary" : "secondary"}
                 size="lg"
-                onClick={() => checkTask(task.id, !task.done)}
+                onClick={() => checkTask(task.id, !task.completed)}
             />
             <div
-                className={`w-100 ms-3 border-bottom border-secondary fw-bold${task.done ? " fw-light text-decoration-line-through" : ""}`}
-                style={task.done ? { textDecoration: "line-through", color: "rgb(159, 166, 178)" } : {}}
+                className={`w-100 ms-3 border-bottom border-secondary fw-bold${task.completed ? " fw-light text-decoration-line-through" : ""}`}
+                style={task.completed ? { textDecoration: "line-through", color: "rgb(159, 166, 178)" } : {}}
                 onClick={() => selectTask(task)}
             >
                 {task.title}
