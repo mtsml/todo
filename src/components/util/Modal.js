@@ -20,7 +20,7 @@ const Modal = ({isOpen, initModal, closeModal, children}) => {
             onClick={closeModal}
         >
             <div
-                className={`tmodal p-2 pb-3 border${isOpen ? " slideUp" : ""}`}
+                className={`tmodal p-3 pb-3 border${isOpen ? " slideUp" : ""}`}
                 onClick={e => e.stopPropagation()}
             >
                 {children}

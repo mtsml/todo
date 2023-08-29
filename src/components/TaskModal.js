@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { MDBBtn, MDBInput, MDBTextArea } from 'mdb-react-ui-kit';
+import { MDBBtn } from 'mdb-react-ui-kit';
 import Modal from './util/Modal';
 import { useTask } from '../store/taskState';
 import { useList } from '../store/listState';
@@ -41,65 +41,69 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
             initModal={initModal}
             closeModal={resetModal}
         >
-            <div className="form-group">
-                <label>リスト</label>
-                <select
-                    className="form-select"
-                    value={listId}
-                    onChange={e => setListId(Number(e.target.value))}
+            <div className="mb-2 d-flex">
+                <i
+                    className="fas fa-2x fa-times ps-1 text-secondary"
+                    onClick={closeModal}
+                />
+                {/* 削除ボタンの表示状態に関わらずまとめて右寄せにするためにdivで囲う */}
+                <div
+                    className="ms-auto"
                 >
-                    {lists.map(list => (
-                        <option key={list.id} value={list.id}>{list.title}</option>
-                    ))}
-                </select>
-            </div>
-            <MDBInput
-                ref={titleRef}
-                className="mt-3"
-                name="title"
-                label="タイトル"
-                type="text"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-            />
-            <MDBTextArea
-                className="mt-3"
-                name="detail"
-                label="説明"
-                type="textarea"
-                value={detail}
-                rows={4}
-                onChange={e => setDetail(e.target.value)}
-            />
-            <div className="mt-3 d-flex justify-content-between">
-                <MDBBtn
-                    color='secondary'
-                    onClick={resetModal}
-                >
-                    閉じる
-                </MDBBtn>
-                {selectedTask && (
+                    {selectedTask && (
+                        <MDBBtn
+                            outline
+                            rounded
+                            className="me-2 px-3 py-1 fs-6"
+                            color="danger"
+                            onClick={() => {
+                                removeTask(selectedTask.id);
+                                resetModal();
+                            }}
+                        >
+                            削除
+                        </MDBBtn>
+                    )}
                     <MDBBtn
-                        color='danger'
+                        outline
+                        rounded
+                        className="px-3 py-1 fs-6"
                         onClick={() => {
-                            removeTask(selectedTask.id);
+                            selectedTask
+                                ? updateTask(selectedTask.id, {title, detail, listId})
+                                : addTask({title, detail, listId})
                             resetModal();
                         }}
                     >
-                        削除
+                        {selectedTask ? "更新" : "追加"}
                     </MDBBtn>
-                )}
-                <MDBBtn
-                    onClick={() => {
-                        selectedTask
-                            ? updateTask(selectedTask.id, {title, detail, listId})
-                            : addTask({title, detail, listId})
-                        resetModal();
-                    }}
-                >
-                    {selectedTask ? "保存" : "追加"}
-                </MDBBtn>
+                </div>
             </div>
+            <input
+                ref={titleRef}
+                className="w-100 border-0 border-bottom"
+                value={title}
+                type="text"
+                onChange={e => setTitle(e.target.value)}
+            />
+            <label className="mt-2" style={{ fontSize: "12px" }}>リスト</label>
+            <select
+                className="w-100 border-0 border-bottom"
+                value={listId}
+                onChange={e => setListId(Number(e.target.value))}
+            >
+                {lists.map(list => (
+                    <option key={list.id} value={list.id}>{list.title}</option>
+                ))}
+            </select>
+            <label className="mt-2" style={{ fontSize: "12px" }}>メモ</label>
+            <textarea
+                readOnly
+                className="w-100 fs-6 border-0 border-bottom"
+                type="textarea"
+                value={detail}
+                onChange={e => setDetail(e.target.value)}
+            />
         </Modal>
     )
 }
