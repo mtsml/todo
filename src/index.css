@@ -9,6 +9,10 @@ header {
     z-index: 1;
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
 footer {
     width: 100%;
     background-color: #FFF;

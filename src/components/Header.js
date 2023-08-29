@@ -22,9 +22,9 @@ export const Header = () => {
     };
 
     return (
-        <header className='d-flex justify-content-between'>
-            <div className="overflow-x-scroll">
-                <MDBTabs className="mb-1 text-nowrap w-max-content">
+        <header className='d-flex justify-content-between border-bottom border-secondary'>
+            <div className="overflow-x-scroll scrollbar-hidden">
+                <MDBTabs className="text-nowrap w-max-content mb-0">
                     {lists?.map(list => (
                         <MDBTabsItem key={list.id}>
                             <MDBTabsLink
@@ -39,7 +39,7 @@ export const Header = () => {
                 </MDBTabs>
             </div>
             <i
-                className={`fas fa-2x pe-2 pt-2 ${sidebarIsOpen ? "fa-times" : "fa-bars"}`}
+                className={`fas fa-2x px-2 pt-2 ${sidebarIsOpen ? "fa-times" : "fa-bars"}`}
                 style={{ zIndex: 10 }}
                 onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             />
