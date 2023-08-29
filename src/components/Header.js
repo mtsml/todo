@@ -10,7 +10,7 @@ export const Header = () => {
     return (
         <header className='d-flex justify-content-between'>
             <div className="overflow-x-scroll">
-                <MDBTabs className='mb-1 text-nowrap'>
+                <MDBTabs className="mb-1 text-nowrap w-max-content">
                     {lists?.map(list => (
                         <MDBTabsItem key={list.id}>
                             <MDBTabsLink

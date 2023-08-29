@@ -69,3 +69,7 @@ header {
 .tmodal.slideUp {
     transform: translateY(0%);
 }
+
+.w-max-content {
+    width: max-content;
+}
