@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { MDBBtn, MDBInput, MDBTextArea } from 'mdb-react-ui-kit'
-import Modal from './Modal';
+import { MDBBtn, MDBInput, MDBTextArea } from 'mdb-react-ui-kit';
+import Modal from './util/Modal';
 import { useTask } from '../store/taskState';
 import { useList } from '../store/listState';
 
@@ -10,22 +10,25 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
     const [detail, setDetail] = useState("");
     const [listId, setListId] = useState("");
 
-    const { addTask, updateTask, removeTask } = useTask();
-    const { lists, activeListId } = useList();
     const titleRef = useRef("");
 
-    const callback = () => {
+    const { addTask, updateTask, removeTask } = useTask();
+    const { lists, activeListId } = useList();
+
+    const initModal = () => {
         if (selectedTask) {
+            // 更新
             setTitle(selectedTask.title);
             setDetail(selectedTask.detail);
-            setListId(selectedTask.listId)
+            setListId(selectedTask.listId);
         } else {
+            // 新規
             setListId(activeListId);
             titleRef.current?.focus();
         }
     }
 
-    const cleanUp = () => {
+    const resetModal = () => {
         closeModal();
         setTitle("");
         setDetail("");
@@ -35,8 +38,8 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
     return (
         <Modal
             isOpen={isOpen}
-            closeModal={cleanUp}
-            callback={callback}
+            initModal={initModal}
+            closeModal={resetModal}
         >
             <div className="form-group">
                 <label>リスト</label>
@@ -71,14 +74,17 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
             <div className="mt-3 d-flex justify-content-between">
                 <MDBBtn
                     color='secondary'
-                    onClick={cleanUp}
+                    onClick={resetModal}
                 >
                     閉じる
                 </MDBBtn>
                 {selectedTask && (
                     <MDBBtn
                         color='danger'
-                        onClick={() => { removeTask(selectedTask.id); closeModal(); }}
+                        onClick={() => {
+                            removeTask(selectedTask.id);
+                            resetModal();
+                        }}
                     >
                         削除
                     </MDBBtn>
@@ -88,7 +94,7 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
                         selectedTask
                             ? updateTask(selectedTask.id, {title, detail, listId})
                             : addTask({title, detail, listId})
-                        closeModal();
+                        resetModal();
                     }}
                 >
                     {selectedTask ? "保存" : "追加"}

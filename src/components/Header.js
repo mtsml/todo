@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MDBTabs, MDBTabsItem, MDBTabsLink} from 'mdb-react-ui-kit';
-import { useListHoook } from '../hooks/useList';
+import listAPI from '../api/listAPI';
+import { useList } from '../store/listState';
 import Sidebar from './Sidebar';
 
 
 export const Header = () => {
-    const { lists, selectList, sidebarIsOpen, setSidebarIsOpen } = useListHoook();
+    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+
+    const { lists, setList } = useList();
+
+    useEffect(() => {
+        (async () => {
+            const data = await listAPI.fetchLists();
+            setList(data);
+        })();
+    }, [])
+
+    const selectList = (id) => {
+        setList(lists.map(list => ({...list, isActive: list.id === id})))
+    };
 
     return (
         <header className='d-flex justify-content-between'>

@@ -1,35 +1,22 @@
 import React, { useState, useRef } from 'react';
-import { MDBBtn, MDBInput } from 'mdb-react-ui-kit'
-import Modal from './Modal';
+import ListModal from './ListModal';
 import { useList } from '../store/listState';
 
 
 const Sidebar = ({ isOpen }) => {
-    const [listName, setListName] = useState("");
-    const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+    const [listModalIsOpen, setListModalIsOpen] = useState(false);
     const [selectedList, setSelectedList] = useState(null);
 
-    const { lists, addList, updateList, removeList } = useList();
-
-    const listNameRef = useRef("");
+    const { lists } = useList();
 
     const selectList = (list) => {
         setSelectedList(list);
-        setEditModalIsOpen(true);
-    }
-
-    const callback = () => {
-        if (selectedList) {
-            setListName(selectedList.title);
-        } else {
-            listNameRef.current?.focus();
-        }
+        setListModalIsOpen(true);
     }
 
     const closeModal = () => {
-        setListName("");
         setSelectedList(null);
-        setEditModalIsOpen(false);
+        setListModalIsOpen(false);
     }
 
     return (
@@ -49,52 +36,16 @@ const Sidebar = ({ isOpen }) => {
             ))}
             <div
                 className="d-flex align-items-center m-1 p-2 text-primary"
-                onClick={() => setEditModalIsOpen(true)}
+                onClick={() => setListModalIsOpen(true)}
             >
                 <i className="ps-3 pe-2 fas fa-plus fa-lg"></i>
                 <span>新しいリスト</span>
             </div>
-            <Modal
-                isOpen={editModalIsOpen}
+            <ListModal
+                isOpen={listModalIsOpen}
                 closeModal={closeModal}
-                callback={callback}
-            >
-                <MDBInput
-                    ref={listNameRef}
-                    className="mt-4"
-                    name="title"
-                    label="リスト名"
-                    type="text"
-                    value={listName}
-                    onChange={e => setListName(e.target.value)}
-                />
-                <div className="mt-3 d-flex justify-content-between">
-                    <MDBBtn
-                        color='secondary'
-                        onClick={closeModal}
-                    >
-                        閉じる
-                    </MDBBtn>
-                    {selectedList && (
-                        <MDBBtn
-                            color='danger'
-                            onClick={() => { removeList(selectedList.id); closeModal() }}
-                        >
-                            削除
-                        </MDBBtn>
-                    )}
-                    <MDBBtn
-                        onClick={() => {
-                            selectedList
-                                ? updateList(selectedList.id, listName)
-                                : addList(listName)
-                            closeModal();
-                        }}
-                    >
-                        {selectedList ? "更新" : "追加"}
-                    </MDBBtn>
-                </div>
-            </Modal>
+                selectedList={selectedList}
+            />
         </div>
     );
 }

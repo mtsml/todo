@@ -5,12 +5,12 @@ import React, { useEffect } from 'react';
  * 共通のモーダル部品。
  * 画面下からスライドして表示される。
  */
-const Modal = ({isOpen, callback, closeModal, children}) => {
+const Modal = ({isOpen, initModal, closeModal, children}) => {
 
     // モーダルが開いた際に任意の処理を実行する
     useEffect(() => {
         if (isOpen) {
-            callback()
+            initModal()
         }
     }, [isOpen])
 

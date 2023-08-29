@@ -1,6 +1,4 @@
-import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import { listState } from './listState';
-import { filterState } from './filterState';
+import { atom, useRecoilState } from 'recoil';
 import taskAPI from '../api/taskAPI';
 
 
@@ -10,28 +8,8 @@ export const taskState = atom({
 });
 
 
-export const activeLisTaskSelector = selector({
-    key: 'activeLisTaskSelector',
-    get: ({ get }) => {
-        const list = get(listState);
-        const task = get(taskState);
-        const filter = get(filterState);
-
-        const activeListId = list.find(l => l.isActive)?.id;
-        const activeFilterKey = filter.activeKey;
-        return task
-            ?.filter(t => t.listId === activeListId)
-            ?.filter(t => activeFilterKey === "all"
-                || (activeFilterKey === "active" && !t.completed)
-                || (activeFilterKey === "completed" && t.completed)
-            );
-    },
-});
-
-
 export const useTask = () => {
     const [tasks, setTask] = useRecoilState(taskState);
-    const activeListTasks = useRecoilValue(activeLisTaskSelector);
 
     const addTask = async (param) => {
         const data = await taskAPI.addTask(param);
@@ -39,13 +17,11 @@ export const useTask = () => {
     }
 
     const updateTask = async (id, param) => {
-        console.log(id, param)
         const data = await taskAPI.updateTask(id, param);
         setTask(tasks.map(task => task.id === data.id
             ? data
             : task
         ))
-        console.log(data)
     }
 
     const removeTask = async (id) => {
@@ -58,7 +34,6 @@ export const useTask = () => {
         setTask,
         addTask,
         updateTask,
-        removeTask,
-        activeListTasks
+        removeTask
     }
 }
