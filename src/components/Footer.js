@@ -12,7 +12,7 @@ const FILTER_OPTIONS = [
 const Footer = ({ activeFilter, setActiveFilter, setModalIsOpen }) => {
 
     return (
-        <footer className='addBtnWrapper px-2 pt-1 pb-3 border-top border-secondary'>
+        <footer className='px-2 pt-1 pb-3 border-top border-secondary'>
             <MDBTabs pills justify className='w-100'>
                 {FILTER_OPTIONS.map(option => (
                     <MDBTabsItem key={option.key}>
