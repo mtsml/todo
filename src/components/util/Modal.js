@@ -48,10 +48,7 @@ const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, 
                             )}
                             <Button
                                 label={isEditMode ? "更新" : "追加"}
-                                onClick={() => {
-                                    isEditMode ? update() : add()
-                                    closeModal();
-                                }}
+                                onClick={() => isEditMode ? update() : add()}
                             />
                         </div>
                     </div>
@@ -62,9 +59,8 @@ const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, 
                 open={alertOpen}
                 cancel={() => setAlertOpen(false)}
                 ok={() => {
-                    remove();
                     setAlertOpen(false);
-                    closeModal();
+                    remove();
                 }}
                 message="削除しますか？"
             />

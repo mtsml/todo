@@ -2,12 +2,14 @@ import React, { useState, useRef } from 'react';
 import Modal from './util/Modal';
 import { useTask } from '../store/taskState';
 import { useList } from '../store/listState';
+import { isEmpty } from '../util/utility';
 
 
 const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
     const [listId, setListId] = useState("");
+    const [inValid, setInValid] = useState(false);
 
     const titleRef = useRef("");
 
@@ -15,15 +17,15 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
     const { lists, activeListId } = useList();
 
     const initModal = () => {
-        if (selectedTask) {
+        if (isEmpty(selectedTask)) {
+            // 新規
+            setListId(activeListId);
+            titleRef.current?.focus();
+        } else {
             // 更新
             setTitle(selectedTask.title);
             setDetail(selectedTask.detail);
             setListId(selectedTask.listId);
-        } else {
-            // 新規
-            setListId(activeListId);
-            titleRef.current?.focus();
         }
     }
 
@@ -32,6 +34,7 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
         setTitle("");
         setDetail("");
         setListId("");
+        setInValid(false);
     }
 
     return (
@@ -40,10 +43,17 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
             initModal={initModal}
             closeModal={resetModal}
             isEditMode={!!selectedTask}
-            add={() => addTask({title, detail, listId})}
-            update={() => updateTask(selectedTask.id, {title, detail, listId})}
-            remove={() => removeTask(selectedTask.id)}
+            add={isEmpty(title)
+                ? () => { setInValid(true) }
+                : () => { addTask({title, detail, listId}); resetModal(); }
+            }
+            update={isEmpty(title)
+                ? () => { setInValid(true); }
+                : () => { updateTask(selectedTask.id, {title, detail, listId}); resetModal(); }
+            }
+            remove={() => { removeTask(selectedTask.id); resetModal(); }}
         >
+            {inValid && <span className="text-danger">タイトルを入力してください</span>}
             <input
                 ref={titleRef}
                 className="w-100 border-0 border-bottom"
