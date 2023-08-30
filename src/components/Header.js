@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { MDBTabs, MDBTabsItem, MDBTabsLink} from 'mdb-react-ui-kit';
-import listAPI from '../api/listAPI';
-import { useList } from '../store/listState';
-import Sidebar from './Sidebar';
+import React, { useState } from "react";
+import { MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
+import Sidebar from "./Sidebar";
+import { useList } from "../store/listState";
 
 
 export const Header = () => {
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
 
-    const { lists, setList } = useList();
-
-    useEffect(() => {
-        (async () => {
-            const data = await listAPI.fetchLists();
-            setList(data);
-        })();
-    }, []);
-
-    const selectList = (id) => {
-        setList(lists.map(list => ({...list, isActive: list.id === id})))
-    };
+    const { lists, toActive } = useList();
 
     return (
         <header className='w-100 d-flex justify-content-between border-bottom border-secondary'>
@@ -29,7 +17,7 @@ export const Header = () => {
                         <MDBTabsItem key={list.id}>
                             <MDBTabsLink
                                 className="py-3 px-3 fs-6 mb-0"
-                                onClick={() => !list.isActive && selectList(list.id)}
+                                onClick={() => !list.isActive && toActive(list.id)}
                                 active={list.isActive}
                             >
                                 {list.title}
@@ -40,7 +28,7 @@ export const Header = () => {
             </div>
                 <i
                     className={`fas fa-2x px-2 pt-2 ${sidebarIsOpen ? "fa-times" : "fa-bars"}`}
-                    style={{ zIndex: 10 }}
+                    style={{ zIndex: 25 }}
                     onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
                 />
             <Sidebar isOpen={sidebarIsOpen}/>

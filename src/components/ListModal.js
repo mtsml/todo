@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
-import Modal from './util/Modal';
-import { useList } from '../store/listState';
-import { isEmpty } from '../util/utility';
+import React, { useRef, useState } from "react";
+import SlideModal from "./util/SlideModal";
+import { useList } from "../store/listState";
+import { isEmpty } from "../util/utility";
 
 
 const ListModal = ({ isOpen, closeModal, selectedList }) => {
@@ -29,11 +29,11 @@ const ListModal = ({ isOpen, closeModal, selectedList }) => {
     }
 
     return (
-        <Modal
+        <SlideModal
             isOpen={isOpen}
             initModal={initModal}
             closeModal={resetModal}
-            isEditMode={!!selectedList}
+            isEditMode={!isEmpty(selectedList)}
             add={isEmpty(name)
                 ? () => { setInValid(true); }
                 : () => { addList(name); resetModal(); }
@@ -52,7 +52,7 @@ const ListModal = ({ isOpen, closeModal, selectedList }) => {
                 type="text"
                 onChange={e => setName(e.target.value)}
             />
-        </Modal>
+        </SlideModal>
     )
 }
 

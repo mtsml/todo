@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import TaskModal from './TaskModal';
-import Task from './Task';
-import taskAPI from '../api/taskAPI';
-import { useTask } from '../store/taskState';
-import { useList } from '../store/listState';
+import React, { useEffect, useState } from "react";
+import Footer from "./Footer";
+import Header from "./Header";
+import Task from "./Task";
+import TaskModal from "./TaskModal";
+import listAPI from "../api/listAPI";
+import taskAPI from "../api/taskAPI";
+import { useList } from "../store/listState";
+import { useTask } from "../store/taskState";
+import { DEFAULT_FILTER } from "../util/constant";
 
 
 const Main = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [activeFilter, setActiveFilter] = useState("active");
+    const [activeFilter, setActiveFilter] = useState(DEFAULT_FILTER);
     const [selectedTask, setSelectedTask] = useState(null);
 
-    const { tasks, setTask, updateTask } = useTask();
-    const { activeListId } = useList();
+    const { tasks, setTask, toggleCompleted } = useTask();
+    const { activeListId, setList } = useList();
 
+    // マウント時にAPIをコールしすべてのデータを一括で取得する
     useEffect(() => {
         (async () => {
-            const data = await taskAPI.fetchTasks();
-            setTask(data);
+            const taskData = await taskAPI.fetchTasks();
+            setTask(taskData);
+            const listData = await listAPI.fetchLists();
+            setList(listData);
         })();
     }, []);
 
@@ -30,18 +35,14 @@ const Main = () => {
             || (activeFilter === "completed" && task.completed)
         );
 
-    const checkTask = (id, completed) => {
-        updateTask(id, { completed })
-    }
-
     const selectTask = (task) => {
         setSelectedTask(task);
         setModalIsOpen(true);
     }
 
     const closeModal = () => {
-        setModalIsOpen(false);
         setSelectedTask(null);
+        setModalIsOpen(false);
     }
 
     return (
@@ -53,7 +54,7 @@ const Main = () => {
                         key={task.id}
                         task={task}
                         selectTask={selectTask}
-                        checkTask={checkTask}
+                        toggleCompleted={toggleCompleted}
                     />
                 ))}
             </main>

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import ListModal from './ListModal';
-import { useList } from '../store/listState';
+import React, { useState } from "react";
+import ListModal from "./ListModal";
+import { useList } from "../store/listState";
 
 
 const Sidebar = ({ isOpen }) => {
@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen }) => {
     }
 
     return (
-        <div className={isOpen ? "pt-5 sidebar slideIn" : "pt-5 sidebar"}>
+        <div className={`pt-5 sidebar${isOpen ? " slideIn" : ""}`}>
             {lists.map(list => (
                 <div
                     key={list.id}

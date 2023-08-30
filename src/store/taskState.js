@@ -1,8 +1,8 @@
-import { atom, useRecoilState } from 'recoil';
-import taskAPI from '../api/taskAPI';
+import { atom, useRecoilState } from "recoil";
+import taskAPI from "../api/taskAPI";
 
 
-export const taskState = atom({
+const taskState = atom({
     key: "taskState",
     default: []
 });
@@ -21,7 +21,7 @@ export const useTask = () => {
         setTask(tasks.map(task => task.id === data.id
             ? data
             : task
-        ))
+        ));
     }
 
     const removeTask = async (id) => {
@@ -29,11 +29,16 @@ export const useTask = () => {
         setTask(tasks.filter(task => task.id !== id));
     }
 
+    const toggleCompleted = (id) => {
+        const task = tasks.find(task => task.id === id);
+        updateTask(id, { completed: !task.completed });
+    }
+
     return {
         tasks,
         setTask,
         addTask,
-        updateTask,
-        removeTask
+        removeTask,
+        toggleCompleted
     }
 }

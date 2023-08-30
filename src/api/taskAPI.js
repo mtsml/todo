@@ -1,4 +1,12 @@
-import { supabase } from './supabase';
+import { supabase } from "./supabase";
+
+
+/*
+  supabaseのライブラリを利用することでDBからHTTPで値を取得できるため、
+  APIエンドポイントを用意せずにここでデータ整形をおこなう。
+
+  Mockとして動作させる場合は任意の値を返却するように修正する。
+*/
 
 
 const toStateObject = (obj) => {

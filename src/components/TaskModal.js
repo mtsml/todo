@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
-import Modal from './util/Modal';
-import { useTask } from '../store/taskState';
-import { useList } from '../store/listState';
-import { isEmpty } from '../util/utility';
+import React, { useRef, useState } from "react";
+import SlideModal from "./util/SlideModal";
+import { useList } from "../store/listState";
+import { useTask } from "../store/taskState";
+import { isEmpty } from "../util/utility";
 
 
 const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
@@ -38,11 +38,11 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
     }
 
     return (
-        <Modal
+        <SlideModal
             isOpen={isOpen}
             initModal={initModal}
             closeModal={resetModal}
-            isEditMode={!!selectedTask}
+            isEditMode={!isEmpty(selectedTask)}
             add={isEmpty(title)
                 ? () => { setInValid(true) }
                 : () => { addTask({title, detail, listId}); resetModal(); }
@@ -78,8 +78,8 @@ const TaskModal = ({ isOpen, closeModal, selectedTask }) => {
                 value={detail}
                 onChange={e => setDetail(e.target.value)}
             />
-        </Modal>
-    )
+        </SlideModal>
+    );
 }
 
 

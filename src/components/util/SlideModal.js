@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Button from './Button';
-import Alert from './Dialog';
+import React, { useEffect, useState } from "react";
+import Button from "./Button";
+import Dialog from "./Dialog";
 
 
 /**
  * 共通のモーダル部品。
- * 画面下からスライドして表示される。
+ * 画面下からスライドして表示する。
  */
-const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, children}) => {
-    const [alertOpen, setAlertOpen] = useState(false);
+const SlideModal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, children}) => {
+    const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
     // モーダルが開いた際に任意の処理を実行する
     useEffect(() => {
@@ -20,11 +20,11 @@ const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, 
     return (
         <>
             <div
-                className={`modal-overlay${isOpen ? " slideUp" : ""}`}
+                className={`${isOpen ? "overlay slideUp" : ""}`}
                 onClick={closeModal}
             >
                 <div
-                    className={`tmodal p-3 pb-3 border${isOpen ? " slideUp" : ""}`}
+                    className={`slide-modal p-3 pb-3 border${isOpen ? " slideUp" : ""}`}
                     onClick={e => e.stopPropagation()}
                 >
                     <div className="mb-2 d-flex">
@@ -41,9 +41,7 @@ const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, 
                                     label="削除"
                                     className="me-2"
                                     color="danger"
-                                    onClick={() => {
-                                        setAlertOpen(true)
-                                    }}
+                                    onClick={() => setDialogIsOpen(true)}
                                 />
                             )}
                             <Button
@@ -55,11 +53,12 @@ const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, 
                     {children}
                 </div>
             </div>
-            <Alert
-                open={alertOpen}
-                cancel={() => setAlertOpen(false)}
+            {/* 削除時は確認画面を表示する */}
+            <Dialog
+                open={dialogIsOpen}
+                cancel={() => setDialogIsOpen(false)}
                 ok={() => {
-                    setAlertOpen(false);
+                    setDialogIsOpen(false);
                     remove();
                 }}
                 message="削除しますか？"
@@ -69,4 +68,4 @@ const Modal = ({isOpen, initModal, closeModal, isEditMode, add, update, remove, 
 }
 
 
-export default Modal;
+export default SlideModal;

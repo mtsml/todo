@@ -2,7 +2,7 @@ import React from "react";
 import { MDBIcon } from "mdb-react-ui-kit";
 
 
-const Task = ({ task, selectTask, checkTask }) => {
+const Task = ({ task, selectTask, toggleCompleted }) => {
 
     return (
         <div
@@ -13,7 +13,7 @@ const Task = ({ task, selectTask, checkTask }) => {
                 icon={task.completed ? "check" : "circle"}
                 color={task.completed ? "primary" : "secondary"}
                 size="lg"
-                onClick={() => checkTask(task.id, !task.completed)}
+                onClick={() => toggleCompleted(task.id)}
             />
             <div
                 className={`w-100 ms-3 border-bottom border-secondary ${task.completed ? "fw-light text-decoration-line-through text-secondary" : "fw-bold"}`}
