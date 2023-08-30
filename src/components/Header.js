@@ -28,7 +28,7 @@ export const Header = () => {
                     {lists?.map(list => (
                         <MDBTabsItem key={list.id}>
                             <MDBTabsLink
-                                className="py-3 px-3 fs-6"
+                                className="py-3 px-3 fs-6 mb-0"
                                 onClick={() => !list.isActive && selectList(list.id)}
                                 active={list.isActive}
                             >

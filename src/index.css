@@ -25,7 +25,6 @@ main {
 }
 
 .scrollbar {
-    margin-bottom: 1px;
     scroll-snap-type: x mandatory;
     scroll-padding: 0px;
 }
