@@ -24,7 +24,7 @@ export const Header = () => {
     return (
         <header className='w-100 d-flex justify-content-between border-bottom border-secondary'>
             <div className="overflow-x-scroll overflow-y-hidden scrollbar-hidden">
-                <MDBTabs className="mb-0 w-max-content text-nowrap flex-nowrap">
+                <MDBTabs className="mb-3 w-max-content text-nowrap flex-nowrap">
                     {lists?.map(list => (
                         <MDBTabsItem key={list.id}>
                             <MDBTabsLink
