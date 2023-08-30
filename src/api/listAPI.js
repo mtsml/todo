@@ -31,7 +31,7 @@ const addList = async (list) => {
 
 const updateList = async (id, list) => {
     const { data, error } = await supabase
-        .from("task")
+        .from("list")
         .update(list)
         .eq("id", id)
         .select();

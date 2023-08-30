@@ -42,7 +42,7 @@ const ListModal = ({ isOpen, closeModal, selectedList }) => {
                 ? () => { setInValid(true); }
                 : () => { updateList(selectedList.id, name); resetModal(); }
             }
-            remove={() => { removeList(selectedList.id); closeModal(); }}
+            remove={() => { removeList(selectedList.id); resetModal(); }}
         >
             {inValid && <span className="text-danger">リスト名を入力してください</span>}
             <input

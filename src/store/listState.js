@@ -22,20 +22,21 @@ export const useList = () => {
     const activeListId = useRecoilValue(activeListIdSelector);
 
     const addList = async (title) => {
-        const list = await listAPI.addList({title})
-        setList([...lists, list]);
+        const data = await listAPI.addList({title})
+        setList([...lists, data]);
     }
 
-    const updateList = (id, title) => {
-        console.log(id, title)
-        setList(lists.map(l => l.id === id
-            ? {...l, title}
-            : l
+    const updateList = async (id, title) => {
+        const data = await listAPI.updateList(id, {title})
+        setList(lists.map(list => list.id === data.id
+            ? data
+            : list
         ));
     }
     
-    const removeList = (id) => {
-        setList(lists.filter(l => l.id !== id));
+    const removeList = async (id) => {
+        await listAPI.removeList(id)
+        setList(lists.filter(list => list.id !== id));
     }
     
     return {
