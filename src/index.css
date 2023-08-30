@@ -24,6 +24,10 @@ main {
     padding-bottom: 85px;
 }
 
+.scrollbar-hidden {
+    scroll-snap-type: x mandatory;
+}
+
 .scrollbar-hidden::-webkit-scrollbar {
     display: none;
 }
