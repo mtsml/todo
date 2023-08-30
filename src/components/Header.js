@@ -15,16 +15,16 @@ export const Header = () => {
             const data = await listAPI.fetchLists();
             setList(data);
         })();
-    }, [])
+    }, []);
 
     const selectList = (id) => {
         setList(lists.map(list => ({...list, isActive: list.id === id})))
     };
 
     return (
-        <header className='d-flex justify-content-between border-bottom border-secondary'>
-            <div className="overflow-x-scroll scrollbar-hidden">
-                <MDBTabs className="text-nowrap w-max-content mb-0">
+        <header className='w-100 d-flex justify-content-between border-bottom border-secondary'>
+            <div className="overflow-x-scroll overflow-y-hidden scrollbar-hidden">
+                <MDBTabs className="mb-0 w-max-content text-nowrap flex-nowrap">
                     {lists?.map(list => (
                         <MDBTabsItem key={list.id}>
                             <MDBTabsLink
@@ -38,11 +38,11 @@ export const Header = () => {
                     ))}
                 </MDBTabs>
             </div>
-            <i
-                className={`fas fa-2x px-2 pt-2 ${sidebarIsOpen ? "fa-times" : "fa-bars"}`}
-                style={{ zIndex: 10 }}
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-            />
+                <i
+                    className={`fas fa-2x px-2 pt-2 ${sidebarIsOpen ? "fa-times" : "fa-bars"}`}
+                    style={{ zIndex: 10 }}
+                    onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+                />
             <Sidebar isOpen={sidebarIsOpen}/>
         </header>
     );

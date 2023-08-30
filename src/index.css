@@ -4,13 +4,9 @@ body {
 
 header {
     background-color: #FFF;
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 1;
-}
-
-.scrollbar-hidden::-webkit-scrollbar {
-    display: none;
 }
 
 footer {
@@ -20,6 +16,16 @@ footer {
     align-items: center;
     position: fixed;
     bottom: 0;
+}
+
+main {
+    /* TODO: 固定値で問題ないか確認し、必要であればObserverで動的に値を付与する */
+    padding-top: 50px;
+    padding-bottom: 85px;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar {
