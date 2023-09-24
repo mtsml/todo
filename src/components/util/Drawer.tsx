@@ -1,16 +1,27 @@
-import React, { useEffect, useState } from "react";
-import Button from "./Button";
-import Dialog from "./Dialog";
+import { FC, ReactNode, useEffect, useState } from "react";
+import { Button, Dialog } from "./";
+
+
+type Props = {
+    isOpen: boolean,
+    init: () => void,
+    close: () => void,
+    isEditMode: boolean,
+    add: () => void,
+    update: () => void,
+    remove: () => void,
+    children: ReactNode
+}
 
 
 /**
  * Drawer。
  * 画面下からスライドして表示する。
  */
-const Drawer = ({ isOpen, init, close, isEditMode, add, update, remove, children }) => {
-    const [dialogIsOpen, setDialogIsOpen] = useState(false);
-    const [startY, setStartY] = useState(0);
-    const [moveY, setMoveY] = useState(0);
+const Drawer: FC<Props> = ({ isOpen, init, close, isEditMode, add, update, remove, children }) => {
+    const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
+    const [startY, setStartY] = useState<number>(0);
+    const [moveY, setMoveY] = useState<number>(0);
 
     // drawerが開いた際に任意の処理を実行する
     useEffect(() => {
@@ -36,7 +47,7 @@ const Drawer = ({ isOpen, init, close, isEditMode, add, update, remove, children
                     onClick={e => e.stopPropagation()}
                     onTouchStart={e => setStartY(e.touches[0].pageY)}
                     onTouchMove={e => setMoveY(startY - e.changedTouches[0].pageY)}
-                    onTouchEnd={e => {
+                    onTouchEnd={(e: any) => {
                         setStartY(0);
                         if (e.target.clientHeight * 0.5 < -moveY) {
                             close();
@@ -85,7 +96,7 @@ const Drawer = ({ isOpen, init, close, isEditMode, add, update, remove, children
                 message="削除しますか？"
             />
         </>
-    )
+    );
 }
 
 

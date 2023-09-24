@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { List, ListInsertParam, ListUpdateParam } from "../types";
 
 
 /*
@@ -9,13 +10,13 @@ import { supabase } from "./supabase";
 */
 
 
-const toStateObjcet = (obj) => {
+const toStateObjcet = (obj: any): List => {
     obj.isActive = false;
     return obj;
 }
 
 
-const fetchLists = async () => {
+const fetchLists = async (): Promise<List[]> => {
     const { data, error } = await supabase
         .from("list")
         .select("*")
@@ -27,7 +28,7 @@ const fetchLists = async () => {
 }
 
 
-const addList = async (list) => {
+const addList = async (list: ListInsertParam): Promise<List> => {
     const { data, error } = await supabase
         .from("list")
         .insert(list)
@@ -37,7 +38,7 @@ const addList = async (list) => {
 }
 
 
-const updateList = async (id, list) => {
+const updateList = async (id: List["id"], list: ListUpdateParam): Promise<List> => {
     const { data, error } = await supabase
         .from("list")
         .update(list)
@@ -48,7 +49,7 @@ const updateList = async (id, list) => {
 }
 
 
-const removeList = async (id) => {
+const removeList = async (id: List["id"]): Promise<void> => {
     await supabase.from("list").delete().eq("id", id);
 }
 

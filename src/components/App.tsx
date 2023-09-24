@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Loading } from "./util";
 import Footer from "./Footer";
 import Header from "./Header";
-import Loading from "./util/Loading";
 import Main from "./Main";
 import TaskDrawer from "./TaskDrawer";
-import listAPI from "../api/listAPI";
-import taskAPI from "../api/taskAPI";
-import useDrawer from "../hooks/useDrawer";
-import useList from "../store/listState";
-import useTask from "../store/taskState";
+import { listAPI, taskAPI } from "../api"
+import { useDrawer } from "../hooks";
+import { useList, useTask } from "../store";
+import { Task } from "../types";
 import { DEFAULT_FILTER } from "../util/constant";
 
 
@@ -57,7 +56,7 @@ const App = () => {
             <TaskDrawer
                 isOpen={taskDrawerIsOpen}
                 close={closeTaskDrawer}
-                selectedTask={selectedTask}
+                selectedTask={selectedTask as Task}
             />
         </Loading>
     );

@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import useList from "../store/listState";
+import { FC, useState } from "react";
+import { useList } from "../store";
+import { List } from "../types";
 
+
+type Props = {
+    isOpen: boolean,
+    close: () => void,
+    openListDrawer: (list: List | null) => void
+}
 
 /**
  * サイドバー。
  * Drragableが意図した通りに動かないためリストの並び替えは未実装。（#27）　
  */
-const Sidebar = ({ isOpen, close, openListDrawer }) => {
+const Sidebar: FC<Props> = ({ isOpen, close, openListDrawer }) => {
     const [startX, setStartX] = useState(0);
     const [moveX, setMoveX] = useState(0);
 
@@ -23,7 +30,7 @@ const Sidebar = ({ isOpen, close, openListDrawer }) => {
             }}
             onTouchStart={e => setStartX(e.touches[0].pageX)}
             onTouchMove={e => setMoveX(e.changedTouches[0].pageX - startX)}
-            onTouchEnd={e => {
+            onTouchEnd={(e: any) => {
                 setStartX(0);
                 if (e.target.clientWidth * 0.3 < moveX) {
                     close();
@@ -46,7 +53,7 @@ const Sidebar = ({ isOpen, close, openListDrawer }) => {
             ))}
             <div
                 className="d-flex align-items-center m-1 p-2 text-primary"
-                onClick={() => openListDrawer()}
+                onClick={() => openListDrawer(null)}
             >
                 <i className="ps-3 pe-2 fas fa-plus fa-lg"></i>
                 <span>新しいリスト</span>

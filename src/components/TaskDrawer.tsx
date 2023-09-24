@@ -1,25 +1,30 @@
-import React, { useRef, useState } from "react";
-import Drawer from "./util/Drawer";
-import Input from "./util/Input";
-import useList from "../store/listState";
-import useTask from "../store/taskState";
-import { isEmpty } from "../util/utility";
+import { FC, useRef, useState } from "react";
+import { Drawer, Input } from "./util";
+import { useList, useTask } from "../store";
+import { Task } from "../types";
 
 
-const TaskDrawer = ({ isOpen, close, selectedTask }) => {
-    const [title, setTitle] = useState("");
-    const [detail, setDetail] = useState("");
-    const [listId, setListId] = useState("");
-    const [inValid, setInValid] = useState(false);
+type Props = {
+    isOpen: boolean,
+    close: () => void,
+    selectedTask: Task | null
+}
 
-    const titleRef = useRef(null)
+
+const TaskDrawer: FC<Props> = ({ isOpen, close, selectedTask }) => {
+    const [title, setTitle] = useState<string>("");
+    const [detail, setDetail] = useState<string>("");
+    const [listId, setListId] = useState<number | undefined>(undefined)
+    const [inValid, setInValid] = useState<boolean>(false);
+
+    const titleRef = useRef<HTMLTextAreaElement>(null)
 
     const { addTask, updateTask, removeTask } = useTask();
     const { activeListId } = useList();
 
     const init = () => {
         setListId(activeListId);
-        if (isEmpty(selectedTask)) {
+        if (selectedTask === null) {
             // 新規
             titleRef.current?.focus();
         } else {
@@ -33,7 +38,7 @@ const TaskDrawer = ({ isOpen, close, selectedTask }) => {
         close();
         setTitle("");
         setDetail("");
-        setListId("");
+        setListId(undefined)
         setInValid(false);
     }
 
@@ -42,20 +47,21 @@ const TaskDrawer = ({ isOpen, close, selectedTask }) => {
             isOpen={isOpen}
             init={init}
             close={reset}
-            isEditMode={!isEmpty(selectedTask)}
-            add={isEmpty(title)
+            isEditMode={selectedTask !== null}
+            add={title === null
                 ? () => { setInValid(true) }
                 : () => { addTask({title, detail, listId}); reset(); }
             }
-            update={isEmpty(title)
+            update={title === null
                 ? () => { setInValid(true); }
-                : () => { updateTask(selectedTask.id, {title, detail, listId}); reset(); }
+                : () => { selectedTask && updateTask(selectedTask.id, {title, detail, listId}); reset(); }
             }
-            remove={() => { removeTask(selectedTask.id); reset(); }}
+            remove={() => { selectedTask && removeTask(selectedTask.id); reset(); }}
         >
             {inValid && <span className="text-danger">タイトルを入力してください</span>}
             <Input
                 ref={titleRef}
+                className={`${inValid ? "border-danger" : ""}`}
                 value={title}
                 setValue={setTitle}
             />

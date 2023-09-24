@@ -1,9 +1,17 @@
-import React from "react";
+import { FC } from "react";
 import { MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
 import { FILTER_OPTIONS } from "../util/constant";
+import { Task } from "../types";
 
 
-const Footer = ({ activeFilter, setActiveFilter, openTaskDrawer }) => {
+type Props = {
+    activeFilter: string,
+    setActiveFilter: (filterKey: string) => void,
+    openTaskDrawer: (task: Task | null) => void
+}
+
+
+const Footer: FC<Props> = ({activeFilter, setActiveFilter, openTaskDrawer }) => {
     return (
         <footer className="px-2 py-0 border-top">
             <MDBTabs pills justify className="w-100">
@@ -21,7 +29,7 @@ const Footer = ({ activeFilter, setActiveFilter, openTaskDrawer }) => {
             </MDBTabs>
             <i
                 className="fas fa-plus-circle fa-3x text-primary"
-                onClick={() => openTaskDrawer()}
+                onClick={() => openTaskDrawer(null)}
             />
         </footer>
     );

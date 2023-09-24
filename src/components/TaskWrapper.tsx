@@ -1,16 +1,24 @@
-import React from "react";
-import Draggable from "./util/Draggable";
+import { FC } from "react";
+import { Draggable } from "./util";
 import TaskItem from "./TaskItem";
-import useTask from "../store/taskState";
+import { useTask } from "../store";
+import { Task } from "../types";
 
 
-const TaskWrapper = ({ listId, activeFilter, openTaskDrawer }) => {
+type Props = {
+    listId: number,
+    activeFilter: string,
+    openTaskDrawer: (task: Task) => void
+}
+
+
+const TaskWrapper: FC<Props> = ({ listId, activeFilter, openTaskDrawer }) => {
     const { tasks, toggleCompleted, updateTaskOrder } = useTask();
 
     /**
      * フィルターとリストの選択状態から対象のタスクを表示するかを判定する
      */
-    const isDisplay = (task, listId, activeFilter) => {
+    const isDisplay = (task: Task, listId: number, activeFilter: string): boolean => {
         return (
             task.listId === listId
             && (activeFilter === "all"
@@ -21,7 +29,7 @@ const TaskWrapper = ({ listId, activeFilter, openTaskDrawer }) => {
     }
     const displayTasks = tasks.filter(task => isDisplay(task, listId, activeFilter));
 
-    const onDragEnd = ({ items, activeIndex, moveToIndex, isLastItem }) => {
+    const onDragEnd = ({ items, activeIndex, moveToIndex, isLastItem }: any) => {
         const activeTaskId = items[activeIndex].id;
         const moveToTaskId = items[moveToIndex].id;
         updateTaskOrder(listId, activeTaskId, moveToTaskId, isLastItem);

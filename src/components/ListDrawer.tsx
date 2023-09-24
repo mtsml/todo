@@ -1,32 +1,38 @@
-import React, { useRef, useState } from "react";
-import Drawer from "./util/Drawer";
-import Input from "./util/Input";
-import useList from "../store/listState";
-import { isEmpty } from "../util/utility";
+import { FC, useRef, useState } from "react";
+import { Drawer, Input } from "./util";
+import { useList } from "../store";
+import { List } from "../types";
 
 
-const ListDrawer = ({ isOpen, close, selectedList }) => {
-    const [name, setName] = useState("");
-    const [inValid, setInValid] = useState(false);
-    const [unremovable, setUnremovable] = useState(false);
+type Props = {
+    isOpen: boolean,
+    close: () => void,
+    selectedList: List | null
+}
 
-    const listNameRef = useRef("");
+
+const ListDrawer: FC<Props> = ({ isOpen, close, selectedList }) => {
+    const [title, setTitle] = useState<string>("");
+    const [inValid, setInValid] = useState<boolean>(false);
+    const [unremovable, setUnremovable] = useState<boolean>(false);
+
+    const listNameRef = useRef<HTMLTextAreaElement>(null);
 
     const { lists, addList, updateList, removeList } = useList();
 
     const init = () => {
-        if (isEmpty(selectedList)) {
+        if (selectedList === null) {
             // 新規
             listNameRef.current?.focus();
         } else {
             // 更新
-            setName(selectedList.title);
+            setTitle(selectedList.title);
         }
     }
 
     const reset = () => {
-        close(false);
-        setName("");
+        close();
+        setTitle("");
         setInValid(false);
         setUnremovable(false);
     }
@@ -36,27 +42,27 @@ const ListDrawer = ({ isOpen, close, selectedList }) => {
             isOpen={isOpen}
             init={init}
             close={reset}
-            isEditMode={!isEmpty(selectedList)}
-            add={isEmpty(name)
+            isEditMode={selectedList !== null}
+            add={title === null
                 ? () => { setInValid(true); }
-                : () => { addList(name); reset(); }
+                : () => { addList(title); reset(); }
             }
-            update={isEmpty(name)
+            update={title === null
                 ? () => { setInValid(true); }
-                : () => { updateList(selectedList.id, name); reset(); }
+                : () => { selectedList && updateList(selectedList.id, title); reset(); }
             }
             // TODO: 削除ボタン押下前に削除可否は判定できるため、Drawer表示時点でメッセージを表示できることが望ましい
             remove={lists.length === 1
                 ? () => { setUnremovable(true) }
-                : () => { removeList(selectedList.id); reset(); }}
+                : () => { selectedList && removeList(selectedList.id); reset(); }}
         >
             {unremovable && <span className="text-danger">リストが0個になるため削除できません</span>}
             {inValid && <span className="text-danger">リスト名を入力してください</span>}
             <Input
                 ref={listNameRef}
                 className={`${inValid ? "border-danger" : ""}`}
-                value={name}
-                setValue={setName}
+                value={title}
+                setValue={setTitle}
             />
         </Drawer>
     );

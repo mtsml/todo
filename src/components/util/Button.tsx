@@ -1,8 +1,16 @@
-import React from "react";
+import { ComponentProps, FC } from "react";
 import { MDBBtn } from "mdb-react-ui-kit";
 
 
-const Button = ({ label, color, onClick, className }) => {
+type Props = {
+    label: string,
+    color?: ComponentProps<typeof MDBBtn>["color"],
+    onClick: () => void,
+    className?: string
+}
+
+
+const Button: FC<Props> = ({ label, color, onClick, className }) => {
     return (
         <MDBBtn
             outline

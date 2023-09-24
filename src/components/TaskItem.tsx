@@ -1,7 +1,19 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
+import { Task } from "../types";
 
 
-const Task = ({ task, openTaskDrawer, toggleCompleted, dragging, dragStart, dragOver, dragEnd }) => {
+type Props = {
+    task: Task,
+    openTaskDrawer: (task: Task) => void,
+    toggleCompleted: (id: number) => void,
+    dragging: boolean,
+    dragStart: () => void,
+    dragOver: () => void,
+    dragEnd: () => void
+}
+
+
+const TaskItem: FC<Props> = ({ task, openTaskDrawer, toggleCompleted, dragging, dragStart, dragOver, dragEnd }) => {
     const [completed, setCompleted] = useState(task.completed);
 
     return (
@@ -22,7 +34,7 @@ const Task = ({ task, openTaskDrawer, toggleCompleted, dragging, dragStart, drag
                     ? "fa-check-circle"
                     : "fa-circle"}`
                 }
-                onClick={(e) => {
+                onClick={(e: any) => {
                     e.target.style.animation = "zoom-in-out 0.4s";
                     // 完了状態切り替え時にアニメーションを持たせるため、
                     // stateの完了状態のみを変更し、storeの完了状態は遅延して更新する
@@ -47,4 +59,4 @@ const Task = ({ task, openTaskDrawer, toggleCompleted, dragging, dragStart, drag
 }
 
 
-export default Task;
+export default TaskItem;

@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { Task, TaskInsertParam, TaskUpdateParam } from "../types";
 
 
 /*
@@ -9,7 +10,7 @@ import { supabase } from "./supabase";
 */
 
 
-const toStateObject = (obj) => {
+const toStateObject = (obj: any): Task => {
     obj.listId = obj.list_id;
     delete obj.list_id;
     obj.sortNo = obj.sort_no;
@@ -20,7 +21,7 @@ const toStateObject = (obj) => {
 }
 
 
-const toDbObject = (obj) => {
+const toDbObject = (obj: any) => {
     obj.list_id = obj.listId;
     delete obj.listId;
     obj.sort_no = obj.sortNo;
@@ -40,7 +41,7 @@ const fetchTasks = async () => {
 }
 
 
-const addTask = async (task) => {
+const addTask = async (task: TaskInsertParam) => {
     const { data, error } = await supabase
         .from("task")
         .insert(toDbObject(task))
@@ -50,7 +51,7 @@ const addTask = async (task) => {
 }
 
 
-const updateTask = async (id, task) => {
+const updateTask = async (id: Task["id"], task: TaskUpdateParam) => {
     const { data, error } = await supabase
         .from("task")
         .update(toDbObject(task))
@@ -61,7 +62,7 @@ const updateTask = async (id, task) => {
 }
 
 
-const removeTask = async (id) => {
+const removeTask = async (id: Task["id"]) => {
     await supabase.from("task").delete().eq("id", id);
 }
 

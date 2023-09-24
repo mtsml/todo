@@ -1,8 +1,16 @@
-import React from "react";
-import Button from "./Button";
+import { FC } from "react";
+import { Button } from "./";
 
 
-export const Dialog = ({ open, ok, cancel, message }) => {
+type Props = {
+    open: boolean,
+    ok: () => void,
+    cancel: () => void,
+    message: string
+}
+
+
+const Dialog: FC<Props> = ({ open, ok, cancel, message }) => {
     if (!open) return null; 
 
     return (

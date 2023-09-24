@@ -1,28 +1,40 @@
-import React, { useState } from "react";
-import { isNull } from "../../util/utility";
+import { DragEvent, FC, useState, ReactNode } from "react";
+import { Item } from "../../types";
+
+
+type Props = {
+    id: string,
+    className: string,
+    items: Item[],
+    toItemId: (item: Item) => string,
+    onDragEnd: (args: any) => void,
+    children: (args: any) => ReactNode
+}
+
+
 
 /**
  * ドラッグでソート可能な項目をラップするコンポーネント。
  * ソート可能項目を返す関数をchildrenとして受け取る。
  */
-const Draggable = ({ id, className, items, toItemId, onDragEnd, children: toItemComponet }) => {
-    const [activeIndex, setActiveIndex] = useState(null);
-    const [moveToIndex, setMoveToIndex] = useState(null);
-    const [isLastItem, setIsLastItem] = useState(false);
+const Draggable: FC<Props> = ({ id, className, items, toItemId, onDragEnd, children: toItemComponet }) => {
+    const [activeIndex, setActiveIndex] = useState<number| null>(null);
+    const [moveToIndex, setMoveToIndex] = useState<number| null>(null);
+    const [isLastItem, setIsLastItem] = useState<boolean>(false);
 
-    const dragStart = (e, index) => {
+    const dragStart = (e: DragEvent, index: number) => {
         e.stopPropagation();
 
         setActiveIndex(index);
         setMoveToIndex(index);
 
         // ドラッグデータと動作を設定（iOS対応）
-        e.dataTransfer.setData("text/plain", index);
+        e.dataTransfer.setData("text/plain", String(index));
         e.dataTransfer.dropEffect = "move";
         e.dataTransfer.effectAllowed = "move";
     }
 
-    const dragOver = (e, index) => {
+    const dragOver = (e: DragEvent, index: number) => {
         e.preventDefault();
 
         if (index === activeIndex) return;
@@ -31,7 +43,7 @@ const Draggable = ({ id, className, items, toItemId, onDragEnd, children: toItem
         if (!element) return;
 
         // 要素の上辺を基準にしてカーソルが当たっている位置を0~1の範囲で算出
-        const rect = element.getBoundingClientRect(`${id}-${items[index].id}`);
+        const rect = element.getBoundingClientRect();
         const y = e.clientY - rect.top;
         const ratioY = Math.min(1, Math.max(0, y / rect.height));
 
@@ -63,14 +75,14 @@ const Draggable = ({ id, className, items, toItemId, onDragEnd, children: toItem
             key: item.id,
             item,
             dragging: activeIndex === index,
-            dragStart: (e) => dragStart(e, index),
-            dragOver: (e) => dragOver(e, index),
+            dragStart: (e: DragEvent) => dragStart(e, index),
+            dragOver: (e: DragEvent) => dragOver(e, index),
             dragEnd: () => dragEnd()
         })
     ));
 
     // 移動先を示すバーを追加する
-    if (!isNull(activeIndex) && !isNull(moveToIndex)) {
+    if (activeIndex !== null && moveToIndex !== null) {
         const moveToBar = <div
             key={-1}
             className="mx-1 border border-2 border-primary rounded"

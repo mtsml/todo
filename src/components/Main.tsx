@@ -1,10 +1,17 @@
-import React from "react";
+import { FC } from "react";
 import TaskWrapper from "./TaskWrapper";
-import useList from "../store/listState";
+import { useList } from "../store";
+import { Task } from "../types";
 import { throttle } from "../util/utility";
 
 
-const Main = ({ activeFilter, openTaskDrawer }) => {
+type Props = {
+    activeFilter: string,
+    openTaskDrawer: (task: Task) => void
+}
+
+
+const Main: FC<Props> = ({ activeFilter, openTaskDrawer }) => {
     const { lists, toActive, activeListId } = useList();
 
     /**
@@ -13,7 +20,7 @@ const Main = ({ activeFilter, openTaskDrawer }) => {
      * IntersectionObseverでは期待する結果が得られなかったためscrollイベントを利用する。(#21)
      * その際に負荷を抑えるためthrottleでscrollイベントを間引く。
      */
-    const onScroll = (e) => {
+    const onScroll = (e: any) => {
         const width = e.target.clientWidth;
         const scrollLeft = e.target.scrollLeft;
 

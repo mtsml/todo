@@ -1,8 +1,9 @@
 import { atom, useRecoilState } from "recoil";
-import taskAPI from "../api/taskAPI";
+import { taskAPI } from "../api/";
+import { Task, TaskInsertParam, TaskUpdateParam } from "../types";
 
 
-const taskState = atom({
+const taskState = atom<Task[]>({
     key: "taskState",
     default: []
 });
@@ -11,12 +12,12 @@ const taskState = atom({
 const useTask = () => {
     const [tasks, setTask] = useRecoilState(taskState);
 
-    const addTask = async (param) => {
+    const addTask = async (param: TaskInsertParam) => {
         const data = await taskAPI.addTask(param);
         setTask([data, ...tasks]);
     }
 
-    const updateTask = async (id, param) => {
+    const updateTask = async (id: Task["id"], param: TaskUpdateParam) => {
         const data = await taskAPI.updateTask(id, param);
         setTask(tasks.map(task => task.id === data.id
             ? data
@@ -24,20 +25,22 @@ const useTask = () => {
         ));
     }
 
-    const removeTask = async (id) => {
+    const removeTask = async (id: Task["id"]) => {
         await taskAPI.removeTask(id);
         setTask(tasks.filter(task => task.id !== id));
     }
 
-    const toggleCompleted = (id) => {
+    const toggleCompleted = (id: Task["id"]) => {
         const task = tasks.find(task => task.id === id);
-        updateTask(id, { completed: !task.completed });
+        task && updateTask(id, { completed: !task.completed });
     }
 
-    const updateTaskOrder = (listId, fromTaskId, toTaskId, isLastTask) => {
+    const updateTaskOrder = (listId: Task["listId"], fromTaskId: Task["listId"], toTaskId: Task["id"], isLastTask: boolean) => {
         const targetTasks = tasks.filter(task => task.listId === listId && task.id !== fromTaskId);
         const fromTask = tasks.find(task => task.id === fromTaskId);
         const index = targetTasks.findIndex(task => task.id === toTaskId);
+
+        if (!fromTask) return;
 
         if (isLastTask) {
             if (index === targetTasks.length - 1) {

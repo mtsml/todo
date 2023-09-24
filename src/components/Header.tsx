@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
 import ListDrawer from "./ListDrawer";
 import Sidebar from "./Sidebar";
-import useDrawer from "../hooks/useDrawer";
-import useList from "../store/listState";
+import { useDrawer } from "../hooks";
+import { useList } from "../store";
+import { List } from "../types";
 
 
-export const Header = () => {
-    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+export const Header: FC = () => {
+    const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(false);
 
     const {
         isOpen: listDrawerIsOpen,
@@ -18,9 +19,9 @@ export const Header = () => {
 
     const { lists } = useList();
 
-    const moveTo = (id) => {
+    const moveTo = (id: List["id"]) => {
         // ここでは対象のリストへのスクロール処理のみをおこなう
-        // <Main>で表示しているリストにあわせてactiveListIdを更新する
+        // activeListIdの更新はMainコンポーネントで実施する
         const target = document.getElementById(`task-wrapper-${id}`);
         target?.scrollIntoView();
     }
@@ -61,7 +62,7 @@ export const Header = () => {
             <ListDrawer
                 isOpen={listDrawerIsOpen}
                 close={closeListDrawer}
-                selectedList={selectedList}
+                selectedList={selectedList as List}
             />
         </header>
     );
